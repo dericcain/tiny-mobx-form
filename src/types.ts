@@ -49,4 +49,6 @@ export interface Validators {
   [name: string]: Validator;
 }
 
-export type Validator = (field: IField, ...args: any[]) => undefined | string;
+export interface Validator {
+  (field: IField, ...args: any[]): undefined | string
+}

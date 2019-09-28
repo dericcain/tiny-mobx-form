@@ -11,6 +11,8 @@
     "react-app-polyfill": "^1.0.0"
   },
   "alias": {
+    "mobx": "../node_modules/mobx",
+    "mobx-react": "../node_modules/mobx-react",
     "react": "../node_modules/react",
     "react-dom": "../node_modules/react-dom/profiling",
     "scheduler/tracing": "../node_modules/scheduler/tracing-profiling"

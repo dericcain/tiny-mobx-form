@@ -1,6 +1,8 @@
 import { IField, Validator } from '../types';
 
-type IsError = (isError: boolean, message: string) => string | undefined;
+interface IsError {
+  (isError: boolean, message: string): string | undefined
+}
 type Label = string | undefined;
 
 const error: IsError = (isError, message = '') => (isError ? message : undefined);
