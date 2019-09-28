@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html -d ../docs --public-url '.'"
   },
   "dependencies": {
     "react-rainbow-components": "^1.5.0",
