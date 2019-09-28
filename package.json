@@ -47,7 +47,7 @@
     "start:docs": "docz dev",
     "test": "tsdx test --env=jsdom",
     "test:release": "npm t && npm run size",
-    "version": "npm run docs:build && git add docs"
+    "version": "npm run build:docs && git add docs"
   },
   "peerDependencies": {
     "mobx": ">=4"
