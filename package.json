@@ -41,7 +41,7 @@
     "coveralls": "npm run test -- --coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "tsdx lint ./src --ext .ts --fix",
     "preversion": "npm run test:release && npm run build",
-    "release": "np --no-yarn",
+    "release": "release-it",
     "size": "size-limit",
     "start": "tsdx watch",
     "start:docs": "docz dev",
@@ -67,6 +67,7 @@
     "react": "^16.10.0",
     "react-dom": "^16.10.0",
     "react-hot-loader": "^4.12.14",
+    "release-it": "^12.4.1",
     "size-limit": "^2.1.6",
     "tsdx": "^0.9.2",
     "tslib": "^1.10.0",
@@ -88,5 +89,10 @@
       "path": "dist/fab.esm.js",
       "limit": "1.5kb"
     }
-  ]
+  ],
+  "release-it": {
+    "github": {
+      "release": true
+    }
+  }
 }
