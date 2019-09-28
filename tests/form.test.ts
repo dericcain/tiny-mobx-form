@@ -20,14 +20,14 @@ describe('MobX Tiny Form', () => {
     ];
 
     it('should not be valid', () => {
-      const form = new Form(schema, { name: 'jon', email: 'jon@email.com' }, validators());
+      const form = new Form(schema, { name: 'jon', email: 'jon@email.com' }, { additionalValidators: validators()});
       expect(form.isValid).toBe(true);
       form.fields.email.value = '';
       expect(form.isValid).toBe(false);
     });
 
     it('should return the errors', () => {
-      const form = new Form(schema, { name: 'jon', email: '' }, validators());
+      const form = new Form(schema, { name: 'jon', email: '' }, { additionalValidators: validators()});
       expect(form.errors).toHaveLength(1);
       expect(form.errors[0]).toMatch(MESSAGES.required());
       form.fields.email.value = 'not an email';
@@ -35,7 +35,7 @@ describe('MobX Tiny Form', () => {
     });
 
     it('should be dirty once data is entered', () => {
-      const form = new Form(schema, { name: 'jon', email: '' }, validators());
+      const form = new Form(schema, { name: 'jon', email: '' }, { additionalValidators: validators()});
       expect(form.isDirty).toBe(false);
       form.fields.name.value = 'david';
       expect(form.isDirty).toBe(true);
@@ -43,7 +43,7 @@ describe('MobX Tiny Form', () => {
 
     it('should return the values as an object', () => {
       const initialValues = { name: 'jon', email: '' };
-      const form = new Form(schema, initialValues, validators());
+      const form = new Form(schema, initialValues, { additionalValidators: validators()});
       expect(form.values).toMatchObject(initialValues);
       form.fields.name.value = 'david';
       expect(form.values).toMatchObject({ ...initialValues, name: 'david' });
@@ -51,7 +51,7 @@ describe('MobX Tiny Form', () => {
 
     it('should reset the form to the initial values', () => {
       const initialValues = { name: 'jon', email: 'jon@email.com' };
-      const form = new Form(schema, initialValues, validators());
+      const form = new Form(schema, initialValues, { additionalValidators: validators()});
       form.fields.name.value = 'david';
       form.fields.email.value = 'david@email.com';
       expect(form.values).toMatchObject({ name: 'david', email: 'david@email.com' });
@@ -61,7 +61,7 @@ describe('MobX Tiny Form', () => {
 
     it('should show errors by marking the fields as "dirty"', () => {
       const initialValues = { name: 'jon', email: 'jon@email.com' };
-      const form = new Form(schema, initialValues, validators());
+      const form = new Form(schema, initialValues, { additionalValidators: validators()});
       const dirtyFields = () => Object.keys(form.fields).filter((key) => form.fields[key].isTouched);
       expect(dirtyFields()).toHaveLength(0);
       form.showErrors();
@@ -84,7 +84,7 @@ describe('MobX Tiny Form', () => {
         validation: 'required|email',
       }
     ];
-    const form = new Form(schema, {}, validators());
+    const form = new Form(schema, {}, { additionalValidators: validators()});
 
     it('should return whether there are errors or not', () => {
       expect(form.fields.name.hasErrors).toBe(true);
@@ -305,7 +305,9 @@ describe('MobX Tiny Form', () => {
         failMessage: '',
       },
     ];
-    const form = new Form(schema, {}, validators());
+    const form = new Form(schema, {}, {
+      additionalValidators: validators()
+    });
 
     it.each`
       result                                 | name               | expected
