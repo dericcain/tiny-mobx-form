@@ -4,6 +4,10 @@ export default {
   dest: './docs',
   hashRouter: true,
   base: '/tiny-mobx-form/',
+  menu: [
+    'The Basics',
+    'Examples'
+  ],
   plugins: [
     css({
       preprocessor: 'sass',
