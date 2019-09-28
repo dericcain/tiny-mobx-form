@@ -1,8 +1,12 @@
 import { action, computed, observable } from 'mobx';
 
 import { Field } from './field';
-import { Fields, IForm, IFormSchema, InitialValues, Validators } from './types';
+import { Fields, IForm, IFormSchema, IInitialValues, IValidators } from './types';
 import { validators } from './validators';
+
+interface IFormOptions {
+  additionalValidators: IValidators;
+}
 
 export class Form implements IForm {
   @observable public fieldNames: string[] = [];
@@ -34,14 +38,18 @@ export class Form implements IForm {
 
   public constructor(
     fields: IFormSchema[],
-    initialValues: InitialValues = {},
-    additionalValidators: Validators = {},
+    initialValues: IInitialValues = {},
+    options: IFormOptions = { additionalValidators: {} },
   ) {
     fields.forEach((props: IFormSchema) => {
       this.fieldNames.push(props.name);
       const initialValue = initialValues[props.name] || props.initialValue;
       const newProps = { ...props, initialValue };
-      this.fields[newProps.name] = new Field(this, newProps, validators(additionalValidators));
+      this.fields[newProps.name] = new Field(
+        this,
+        newProps,
+        validators(options.additionalValidators),
+      );
     });
   }
 

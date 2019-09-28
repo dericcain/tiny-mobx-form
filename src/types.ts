@@ -41,14 +41,14 @@ export interface Values {
   [key: string]: string;
 }
 
-export interface InitialValues {
+export interface IInitialValues {
   [key: string]: string;
 }
 
-export interface Validators {
-  [name: string]: Validator;
+export interface IValidators {
+  [name: string]: IValidator;
 }
 
-export interface Validator {
+export interface IValidator {
   (field: IField, ...args: any[]): undefined | string
 }

@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx';
 
 import { validate } from './validators';
-import { IField, IForm, IFormSchema, Validators } from './types';
+import { IField, IForm, IFormSchema, IValidators } from './types';
 
 export class Field implements IField {
   public name: string;
@@ -46,7 +46,7 @@ export class Field implements IField {
   public constructor(
     public form: IForm,
     { name, label = '', placeholder = '', validation = '', initialValue = '' }: IFormSchema,
-    private validators: Validators,
+    private validators: IValidators,
   ) {
     this.name = name;
     this.label = label;

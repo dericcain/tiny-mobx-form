@@ -1,4 +1,4 @@
-import { IField, Validators } from '../types';
+import { IField, IValidators } from '../types';
 import {
   alpha,
   letters,
@@ -14,7 +14,7 @@ import {
   size,
 } from './validations';
 
-export function validate(field: IField, validators: Validators): string[] | any[] {
+export function validate(field: IField, validators: IValidators): string[] | any[] {
   const validations = field.validation.split('|');
   return validations
     .map((validation: string) => {
@@ -33,7 +33,7 @@ export function validate(field: IField, validators: Validators): string[] | any[
     .filter(Boolean);
 }
 
-export const validators = (additionalValidators: Validators = {}) => ({
+export const validators = (additionalValidators: IValidators = {}) => ({
   required,
   'required-if': requiredIf,
   length,
