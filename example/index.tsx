@@ -1,91 +1,94 @@
 import 'react-app-polyfill/ie11';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { observer } from 'mobx-react';
-import { Form, IFormSchema } from '../.';
+import { Tabset, Tab } from 'react-rainbow-components';
+import { Simple } from './components/simple';
+import { SimpleCode } from './components/simple-code';
 
-const schema: IFormSchema[] = [
-  {
-    name: 'firstName',
-    placeholder: 'John',
-    label: 'First Name',
-    validation: 'required|length:2,20',
-    initialValue: '',
-  },
-  {
-    name: 'lastName',
-    placeholder: 'Appleseed',
-    label: 'Last Name',
-    validation: 'required|length:2,20',
-    initialValue: '',
-  },
-  {
-    name: 'email',
-    placeholder: 'jon@gmail.com',
-    label: 'Email',
-    validation: 'required|email',
-    initialValue: '',
-  },
-  {
-    name: 'age',
-    placeholder: '22',
-    label: 'Age',
-    validation: 'required|number|size:18,100',
-    initialValue: '',
-  },
-];
+const tabsContainerStyles = {
+  backgroundColor: 'white',
+  borderRadius: '0.875rem',
+};
 
-const { fields } = new Form(schema);
+interface AppState {
+  readonly selected: 'simple' | 'complex';
+}
 
-const App = observer(() => {
-  return (
-    <div>
-      <div>
-        <label htmlFor="firstName">{fields.firstName.label}</label>
-        <input
-          type="text"
-          name="firstName"
-          value={fields.firstName.value}
-          placeholder={fields.firstName.placeholder}
-          onChange={e => fields.firstName.value = e.currentTarget.value}
-        />
-        {fields.firstName.isDirty && fields.firstName.hasErrors && fields.firstName.errors.join(', ')}
+class App extends React.Component<{}, AppState> {
+  constructor(props) {
+    super(props);
+    this.state = { selected: 'simple' };
+    this.handleOnSelect = this.handleOnSelect.bind(this);
+  }
+
+  handleOnSelect(event, selected) {
+    this.setState({ selected });
+  }
+
+  getTabContent() {
+    const { selected } = this.state;
+
+    if (selected === 'simple') {
+      return (
+        <div
+          aria-labelledby="simple"
+          id="simpleTab"
+          className="rainbow-p-around_xx-large rainbow-m-bottom_xx-large rainbow-font-size-text_large rainbow-align-text-center rainbow-color_gray-3"
+          style={{ display: 'flex', flex: 1 }}
+        >
+          <Simple />
+          <SimpleCode />
+        </div>
+      );
+    } else if (selected === 'complex') {
+      return (
+        <div
+          aria-labelledby="complex"
+          id="complexTab"
+          className="rainbow-p-around_xx-large rainbow-m-bottom_xx-large rainbow-font-size-text_large rainbow-align-text-center rainbow-color_gray-3"
+        >
+          Rainbows caused by sunlight always appear in the section of sky directly
+          opposite the sun.
+        </div>
+      );
+    }
+  }
+
+  render() {
+    const { selected } = this.state;
+
+    return (
+      <div style={tabsContainerStyles} className="rainbow-p-bottom_xx-large">
+        <div className="rainbow-p-around_large rainbow-align-content_space-between rainbow-background-color_gray-1">
+          <h3 className="rainbow-font-size-heading_medium rainbow-color_dark-1">
+            This is the header
+          </h3>
+        </div>
+        <div className="rainbow-flex rainbow-flex_column rainbow_vertical-stretch">
+          <Tabset
+            id="tabset-1"
+            onSelect={this.handleOnSelect}
+            activeTabName={selected}
+            className="rainbow-background-color_gray-1 rainbow-p-horizontal_x-large"
+          >
+            <Tab
+              label="Simple"
+              name="simple"
+              id="simple"
+              ariaControls="simpleTab"
+            />
+            <Tab
+              label="Complex"
+              name="complex"
+              id="complex"
+              ariaControls="complexTab"
+            />
+          </Tabset>
+          {this.getTabContent()}
+        </div>
       </div>
-      <div>
-        <label htmlFor="lastName">{fields.lastName.label}</label>
-        <input
-          type="text"
-          name="lastName"
-          value={fields.lastName.value}
-          placeholder={fields.lastName.placeholder}
-          onChange={e => fields.lastName.value = e.currentTarget.value}
-        />
-        {fields.lastName.isDirty && fields.lastName.hasErrors && fields.lastName.errors.join(', ')}
-      </div>
-      <div>
-        <label htmlFor="email">{fields.email.label}</label>
-        <input
-          type="text"
-          name="email"
-          value={fields.email.value}
-          placeholder={fields.email.placeholder}
-          onChange={e => fields.email.value = e.currentTarget.value}
-        />
-        {fields.email.isDirty && fields.email.hasErrors && fields.email.errors.join(', ')}
-      </div>
-      <div>
-        <label htmlFor="age">{fields.age.label}</label>
-        <input
-          type="text"
-          name="age"
-          value={fields.age.value}
-          placeholder={fields.age.placeholder}
-          onChange={e => fields.age.value = e.currentTarget.value}
-        />
-        {fields.age.isDirty && fields.age.hasErrors && fields.age.errors.join(', ')}
-      </div>
-    </div>
-  );
-});
+    );
+  }
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));

@@ -153,6 +153,22 @@ describe('MobX Tiny Form', () => {
         failMessage: '',
       },
       {
+        name: 'letters-fail',
+        label: 'Letters Fail',
+        placeholder: 'Letters Fail',
+        validation: 'letters',
+        initialValue: 'nope123',
+        failMessage: MESSAGES.letters(),
+      },
+      {
+        name: 'letters-pass',
+        label: 'Letters Pass',
+        placeholder: 'Letters Pass',
+        validation: 'letters',
+        initialValue: 'yes',
+        failMessage: '',
+      },
+      {
         name: 'email-fail',
         label: 'Email Fail',
         placeholder: 'Email Fail',
@@ -315,6 +331,8 @@ describe('MobX Tiny Form', () => {
       ${form.fields[schema[19].name].errors} | ${schema[19].name} | ${schema[19].failMessage}
       ${form.fields[schema[20].name].errors} | ${schema[20].name} | ${schema[20].failMessage}
       ${form.fields[schema[21].name].errors} | ${schema[21].name} | ${schema[21].failMessage}
+      ${form.fields[schema[22].name].errors} | ${schema[22].name} | ${schema[22].failMessage}
+      ${form.fields[schema[23].name].errors} | ${schema[23].name} | ${schema[23].failMessage}
     `('validation for $name', ({ result, name, expected }) => {
       if (name.includes('fail')) {
         expect(result).toHaveLength(1);

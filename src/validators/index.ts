@@ -1,6 +1,7 @@
 import { IField, Validators } from '../types';
 import {
   alpha,
+  letters,
   email,
   length,
   match,
@@ -36,6 +37,7 @@ export const validators = (additionalValidators: Validators = {}) => ({
   required,
   'required-if': requiredIf,
   length,
+  letters,
   email,
   match,
   number,

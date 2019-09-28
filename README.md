@@ -16,6 +16,7 @@ Tiny (~2KB) tree-shakable MobX form library
 - required if
 - length (string length)
 - match
+- letters
 - email
 - phone number
 - postal

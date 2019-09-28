@@ -8,7 +8,9 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
-    "react-app-polyfill": "^1.0.0"
+    "react-rainbow-components": "^1.5.0",
+    "react-app-polyfill": "^1.0.0",
+    "prismjs": "latest"
   },
   "alias": {
     "mobx": "../node_modules/mobx",
@@ -18,6 +20,7 @@
     "scheduler/tracing": "../node_modules/scheduler/tracing-profiling"
   },
   "devDependencies": {
+    "@types/prismjs": "^1.16.0",
     "@types/react": "^16.8.15",
     "@types/react-dom": "^16.8.4",
     "parcel": "^1.12.3",

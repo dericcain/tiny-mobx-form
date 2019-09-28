@@ -14,6 +14,7 @@ export const MESSAGES = {
   length: (min: string, max: string) =>
     `Must be at least ${min} and no more than ${max} characters`,
   match: (label: Label, matchingLabel: Label) => `The ${label} and ${matchingLabel} do not match.`,
+  letters: () => `Please enter letters only.`,
   email: () => `Please enter a valid email address.`,
   phone: () => `Please enter a valid phone number.`,
   postal: () => `Please enter a valid postal number.`,
@@ -42,6 +43,11 @@ export const match: Validator = (field, matchingFieldName: string) =>
     field.value !== field.form.fields[matchingFieldName].value,
     MESSAGES.match(field.label, field.form.fields[matchingFieldName].label),
   );
+
+const LETTERS: RegExp = /^[a-zA-Z\s]*$/;
+export const letters: Validator = ({ value }) => error(
+  !!value && !LETTERS.test(value), MESSAGES.letters()
+);
 
 const EMAIL: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const email: Validator = ({ value }) =>
