@@ -38,7 +38,7 @@
   "scripts": {
     "build": "tsdx build",
     "build:docs": "docz build",
-    "coveralls": "npm run test:release -- --coverage && cat ./coverage/lcov.info | coveralls",
+    "coveralls": "npm run test -- --coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "tsdx lint ./src --ext .ts --fix",
     "preversion": "npm run test:release && npm run build",
     "size": "size-limit",
