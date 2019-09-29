@@ -72,7 +72,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint"
+      "pre-commit": "tsdx lint && npm run build:docs && git add docs"
     }
   },
   "prettier": {
@@ -86,10 +86,5 @@
       "path": "dist/tiny-mobx-form.esm.js",
       "limit": "2.5kb"
     }
-  ],
-  "release-it": {
-    "github": {
-      "release": true
-    }
-  }
+  ]
 }
