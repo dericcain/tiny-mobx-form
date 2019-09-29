@@ -8,14 +8,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@master
-        env:
-          BASE_BRANCH: master # The branch the action should deploy from.
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: docs # The folder the action should deploy.
-          BUILD_SCRIPT: npm install && npm build:docs # The build script the action should run prior to deploying.
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run build:docs
+      - name: Add Commit
+        run: git add docs && git commit -m "Building docs && git push"
