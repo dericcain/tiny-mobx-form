@@ -50,5 +50,5 @@ export interface IValidators {
 }
 
 export interface IValidator {
-  (field: IField, ...args: any[]): undefined | string
+  (field: IField, ...args: any[]): undefined | string;
 }

@@ -1,7 +1,7 @@
 import { IField, IValidator } from '../types';
 
 interface IsError {
-  (isError: boolean, message: string): string | undefined
+  (isError: boolean, message: string): string | undefined;
 }
 type Label = string | undefined;
 
@@ -45,9 +45,8 @@ export const match: IValidator = (field, matchingFieldName: string) =>
   );
 
 const LETTERS: RegExp = /^[a-zA-Z\s]*$/;
-export const letters: IValidator = ({ value }) => error(
-  !!value && !LETTERS.test(value), MESSAGES.letters()
-);
+export const letters: IValidator = ({ value }) =>
+  error(!!value && !LETTERS.test(value), MESSAGES.letters());
 
 const EMAIL: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const email: IValidator = ({ value }) =>
