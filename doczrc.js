@@ -1,18 +1,16 @@
-import { css } from 'docz-plugin-css';
+import pkg from './package.json';
 
 export default {
+  title: pkg.name,
+  description: pkg.description,
+  typescript: true,
   dest: './docs',
-  hashRouter: true,
+  hashRouter: false,
   base: '/tiny-mobx-form/',
-  menu: [
-    'The Basics',
-    'Examples'
-  ],
-  plugins: [
-    css({
-      preprocessor: 'sass',
-    }),
-  ],
+  // menu: [
+  //   'The Basics',
+  //   'Examples'
+  // ],
   themeConfig: {
     colors: {
       primary: '#73A0D4',
