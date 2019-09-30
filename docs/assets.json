@@ -1,11 +1,9 @@
 {
-  "vendors.js": "/tiny-mobx-form/static/js/vendors.067dc954.js",
-  "vendors.js.map": "/tiny-mobx-form/static/js/vendors.fb1f3b7183be57092f21.js.map",
-  "app.js": "/tiny-mobx-form/static/js/app.fb1f3b7183be57092f21.js",
-  "app.js.map": "/tiny-mobx-form/static/js/app.fb1f3b7183be57092f21.js.map",
-  "example-examples.js": "/tiny-mobx-form/static/js/example-examples.e670085f.js",
-  "example-examples.js.map": "/tiny-mobx-form/static/js/example-examples.fb1f3b7183be57092f21.js.map",
-  "example-introduction.js": "/tiny-mobx-form/static/js/example-introduction.17d02d09.js",
-  "example-introduction.js.map": "/tiny-mobx-form/static/js/example-introduction.fb1f3b7183be57092f21.js.map",
-  "index.html": "/tiny-mobx-form/index.html"
+  "vendors.js": "/static/js/vendors.c47e9cb6.js",
+  "vendors.js.map": "/static/js/vendors.665ef155dfef2841b645.js.map",
+  "app.js": "/static/js/app.665ef155dfef2841b645.js",
+  "app.js.map": "/static/js/app.665ef155dfef2841b645.js.map",
+  "example-introduction.js": "/static/js/example-introduction.9807f2aa.js",
+  "example-introduction.js.map": "/static/js/example-introduction.665ef155dfef2841b645.js.map",
+  "index.html": "/index.html"
 }
