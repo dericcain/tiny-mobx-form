@@ -22,6 +22,51 @@ import OnblurValidation from './components/onblur-validation'
 ## Installation
 `npm i tiny-mobx-form` or `yarn add tiny-mobx-form`
 
+## `Form`
+The `Form` class is the main module that makes tiny-mobx-form work. The `Form` takes an array of 
+objects that define a `Field`. Here are some of the things that the `Form` does:
+- Creates fields
+- Observes fields
+- Observes values
+- Observes whether the field has been touched (the value has been changed)
+- Validation
+- Validation errors
+
+The `Form` accepts three arguments:
+
+| Argument Name | Type | Required | Default | Description |
+|-----------------|--------------------------------------------|----------|--------------------------------|-----------------------------------------------------------------------------------------------|
+| `fields` | `IFormSchema[]` | true |  | This is the definition of each field in the form. (See the `IFormSchema` type below) |
+| `initialValues` | `{ [fieldName: string]: string | number }` | false | `{}` | This is the interval at which the `callback` will be called. |
+| `options` | `IFormOptions` | false | `{ additionalValidators: {} }` | These are extra options that can be passed into the form. (See the `IFormOptions` type below) |
+
+Here is the `IFormSchema` type:
+```typescript
+interface IFormSchema {
+  name: string;
+  label?: string;
+  placeholder?: string; 
+  validation?: string;
+  initialValue?: string;
+}
+```
+
+Here is the `IFormOptions` type with the other dependent types. See the Validation section for a 
+better explanation of adding additional validators:
+```typescript
+interface IFormOptions {
+  additionalValidators: IValidators;
+}
+
+interface IValidators {
+  [name: string]: IValidator;
+}
+
+interface IValidator {
+  (field: IField, ...args: any[]): undefined | string;
+}
+```
+
 ## Validation
 Tiny MobX Form has the most common validations built in and also allows custom validations to be
 added.
@@ -72,6 +117,18 @@ const fileSizeValidator = (field, min, max) => {
   }
   return undefined;
 }
+```
+
+And then to add that custom validator, you pass it into the `Form` at the time of construction:
+```js
+const schema = [{
+  name: 'avatar',
+  // This is the validator with the min and max...
+  validation: 'file-size:0,2'
+}]
+
+// The name "file-size" is important because that is how it is referenced in the schema above.
+const form = new Form(schema, {}, { 'file-size': fileSizeValidator });
 ```
 
 ## Examples

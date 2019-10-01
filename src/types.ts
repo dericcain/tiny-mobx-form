@@ -52,3 +52,7 @@ export interface IValidators {
 export interface IValidator {
   (field: IField, ...args: any[]): undefined | string;
 }
+
+export interface IFormOptions {
+  additionalValidators: IValidators;
+}
