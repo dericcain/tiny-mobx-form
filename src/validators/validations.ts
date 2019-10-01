@@ -48,7 +48,7 @@ const LETTERS: RegExp = /^[a-zA-Z\s]*$/;
 export const letters: IValidator = ({ value }) =>
   error(!!value && !LETTERS.test(value), MESSAGES.letters());
 
-const EMAIL: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const EMAIL: RegExp = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const email: IValidator = ({ value }) =>
   error(!!value && !EMAIL.test(value), MESSAGES.email());
 
