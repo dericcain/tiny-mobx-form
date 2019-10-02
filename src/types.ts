@@ -23,21 +23,20 @@ export interface IFormSchema {
 }
 
 export interface IForm {
-  fieldNames: string[];
-  fields: Fields;
+  fields: IFields;
   isValid: boolean;
   errors: string[];
   isDirty: boolean;
-  values: Values;
+  values: IValues;
   showErrors(): void;
   reset(): void;
 }
 
-export interface Fields {
+export interface IFields {
   [key: string]: IField;
 }
 
-export interface Values {
+export interface IValues {
   [key: string]: string;
 }
 

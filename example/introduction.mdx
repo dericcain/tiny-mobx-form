@@ -4,6 +4,7 @@ route: /
 ---
 
 import { Playground } from 'docz'
+import './styles.css';
 import InstantValidation from './components/instant-validation'
 import OnblurValidation from './components/onblur-validation'
 
@@ -19,8 +20,12 @@ import OnblurValidation from './components/onblur-validation'
 - Includes popular validations
 - Can add your own custom validations if needed
 
+---
+
 ## Installation
 `npm i tiny-mobx-form` or `yarn add tiny-mobx-form`
+
+---
 
 ## `Form`
 The `Form` class is the main module that makes tiny-mobx-form work. The `Form` takes an array of 
@@ -32,27 +37,82 @@ objects that define a `Field`. Here are some of the things that the `Form` does:
 - Validation
 - Validation errors
 
-The `Form` accepts three arguments:
+### `Form` Arguments
+The `Form` accepts three arguments: `new Form(fields, initialValues, options)`:
 
-| Argument Name | Type | Required | Default | Description |
+| Argument Name   | Type                                       | Required | Default                        | Description                                                                                   |
 |-----------------|--------------------------------------------|----------|--------------------------------|-----------------------------------------------------------------------------------------------|
-| `fields` | `IFormSchema[]` | true |  | This is the definition of each field in the form. (See the `IFormSchema` type below) |
-| `initialValues` | `{ [fieldName: string]: string | number }` | false | `{}` | This is the interval at which the `callback` will be called. |
-| `options` | `IFormOptions` | false | `{ additionalValidators: {} }` | These are extra options that can be passed into the form. (See the `IFormOptions` type below) |
+| `fields`        | `IFormSchema[]`                            | true     |                                | This is the definition of each field in the form. (See the `IFormSchema` type below)          |
+| `initialValues` | `{ fieldName: 'value' }`                   | false    | `{}`                           | These are the initial values for each form field.                                  |
+| `options`       | `IFormOptions`                             | false    | `{ additionalValidators: {} }` | These are extra options that can be passed into the form. (See the `IFormOptions` type below) |
 
-Here is the `IFormSchema` type:
+#### Fields Schema | `IFormSchema`
+Here is the shape of the `IFormSchema` type:
 ```typescript
 interface IFormSchema {
-  name: string;
-  label?: string;
-  placeholder?: string; 
-  validation?: string;
-  initialValue?: string;
+  name: string; // The name of the field (must be unique)
+  label?: string; // The label of the field
+  placeholder?: string; // The placeholder of the input
+  validation?: string; // The validation string ("required|length:2.10|letters")
+  initialValue?: string; // The initial value of the field
 }
 ```
 
-Here is the `IFormOptions` type with the other dependent types. See the Validation section for a 
+Here is an example of what that looks like:
+```js
+const schema = [
+  {
+    name: 'firstName',
+    placeholder: 'John',
+    label: 'First Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'lastName',
+    placeholder: 'Appleseed',
+    label: 'Last Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'email',
+    placeholder: 'jon@gmail.com',
+    label: 'Email',
+    validation: 'required|email',
+    initialValue: '',
+  },
+  {
+    name: 'age',
+    placeholder: '22',
+    label: 'Age',
+    validation: 'required|number|size:18,100',
+    initialValue: '',
+  },
+];
+```
+
+#### Form Initial Values
+The `Form` can accept initial values as a second argument. This is good to use when you need to query
+an API for the form values and you do not have the values at the time when the schema is created.
+The `initialValues` is an object whose key is the name of the field and the value is the value of
+that field. Here is an example:
+
+```js
+const initialValues = {
+  firstName: 'Ted',
+  lastName: 'Chavez',
+  email: 'ted@email.com',
+  age: 31
+};
+```
+
+#### Form Options | `IFormOptions`
+Here is the `IFormOptions` type with the other dependent types. See the [Validation](#validation) section for a 
 better explanation of adding additional validators:
+
+> Right now, there is only one option available, but there will be more in the future.
+
 ```typescript
 interface IFormOptions {
   additionalValidators: IValidators;
@@ -66,6 +126,51 @@ interface IValidator {
   (field: IField, ...args: any[]): undefined | string;
 }
 ```
+
+Here is an example of what the options would look like:
+```js
+const options = {
+  additionalValidators: {
+    'file-size': fileSizeValidator,
+    'date': dateValidator,
+  } 
+};
+```
+
+> See the [Validation](#validation) section for more info on custom validators.
+
+### `Form` Methods and Properties
+A `Form` instance has a few methods and properties available that should be used to work with the 
+form. Here is the `IForm` interface in which the `Form` implements:
+
+```typescript
+interface IForm {
+  fields: IFields; // These are the fields that get instantiated
+  isValid: boolean; // This returns whether all of the fields are valid
+  errors: string[]; // This is an array of error messages
+  isDirty: boolean; // This returns whether the form's initial values have changed
+  values: IValues; // This is an object of all of the fields and their values (good for sending to server)
+  showErrors(): void; // This makes all of the fields touched so that the error message shows for each field
+  reset(): void; // This resets the form to its initial values
+}
+```
+
+You can use each of this methods to interact with the `Form`.
+
+> See the [Examples](#examples) for more information on how to work wit the `Form` instance.
+
+---
+
+## `Field`
+When a `Form` is created, the fields (the schema) that are passed into the `Form` constructor are used
+to create a `Field` instance. It is possible to access each field by using the field's name: 
+`form.fieldName.property` The `Field` instance has some helpful methods and properties: 
+
+> Access to each field is available by using the field name: `form.name.value`
+
+More info here soon...
+
+---
 
 ## Validation
 Tiny MobX Form has the most common validations built in and also allows custom validations to be
@@ -130,6 +235,8 @@ const schema = [{
 // The name "file-size" is important because that is how it is referenced in the schema above.
 const form = new Form(schema, {}, { 'file-size': fileSizeValidator });
 ```
+
+---
 
 ## Examples
 

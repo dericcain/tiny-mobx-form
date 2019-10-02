@@ -18,8 +18,7 @@ export function validate(field: IField, validators: IValidators): string[] | any
   const validations = field.validation.split('|');
   return validations
     .map((validation: string) => {
-      // const [validator, argument]: [keyof typeof validators, string] = validation.split(':');
-      const [validator, argument] = validation.split(':');
+      const [validator, argument] = validation.split(':') as [keyof typeof validators, string];
       let args: string[] = [];
       if (argument) {
         // Handle the arguments passed in

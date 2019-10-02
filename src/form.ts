@@ -1,13 +1,16 @@
 import { action, computed, observable } from 'mobx';
 
 import { Field } from './field';
-import { Fields, IForm, IFormOptions, IFormSchema, IInitialValues } from './types';
+import { IFields, IForm, IFormOptions, IFormSchema, IInitialValues } from './types';
 import { validators } from './validators';
 
 export class Form implements IForm {
-  @observable public fieldNames: string[] = [];
+  @observable.struct public fields: IFields = {};
 
-  @observable.struct public fields: Fields = {};
+  @computed
+  private get fieldNames(): string[] {
+    return Object.keys(this.fields);
+  }
 
   @computed
   public get isValid() {
