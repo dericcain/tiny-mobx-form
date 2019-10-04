@@ -166,11 +166,54 @@ When a `Form` is created, the fields (the schema) that are passed into the `Form
 to create a `Field` instance. It is possible to access each field by using the field's name: 
 `form.fieldName.property` The `Field` instance has some helpful methods and properties: 
 
-> Access to each field is available by using the field name: `form.name.value`
+> Access to each field is available by using the field name: `field.name.value`
 
-More info here soon...
+```typescript
+interface IField {
+  form: IForm; // The Form that the field belongs to
+  name: string; // The name of the field passed in via the schema
+  label?: string; // The field label
+  placeholder?: string; // The placeholder
+  initialValue?: string; // The initial value
+  value?: string; // The current value (computed property)
+  isTouched: boolean; // This is whether the field is touched or 
+  validation: string; // The validation string that is passed in
+  isValid: boolean; // Whether or not the field has passed all validations 
+  isDirty: boolean; // Does the current value differ from the initial value?
+  hasErrors: boolean; // Does the field have any validation errors?
+  errors: string[]; // The array of errors for the field
+  reset(): void; // Resets the field to the initial value
+}
+```
 
----
+> A `Field` can be touched and not dirty if the input has changed from the initial value but then 
+> reverted back to the initial value, for instance:
+```js
+// The initialValue is "jon"
+field.value = 'john' // The field is now "touched" and "dirty"
+field.value = 'jon' // The field is now "touched" but NOT "dirty"
+```
+
+### Update `Field` value
+If you need to update a `Field` value, you simply mutate (change) the value like so:
+```js
+field.value = 'Some new value';
+```
+
+That is the beauty of working with MobX 👍
+
+Sometimes it is useful to compare two fields and that is why the `Form` instance lives on each field.
+This is especially helpful for [validation](#validation) because you can do things like this with the `Field` 
+instance.
+
+```js
+const dateValidator = field => {
+  if (moment(field.value).isAfter(field.form.endDate.value)) {
+    return `The start date cannot be after the end date.`;
+  }
+  return undefined;
+}
+```
 
 ## Validation
 Tiny MobX Form has the most common validations built in and also allows custom validations to be
@@ -189,6 +232,23 @@ added.
 - alphanumeric - `alpha`
 - size (number between) - `size:<min>,<max>` | `size:50,100`
 - one of (array list) - `one-of:<comma separated list>` | `one-of:red,blue,green`
+
+### Using Validators
+Validators are passed into the form schema and follow this pattern:
+```
+const schema [{
+    name: 'name',
+    validation: 'name-of-validator:all,the,arguments' // Arguments are separated by commas
+}];
+```
+
+It is also possible to add more than one validator by separating validators by the pipe `|`.
+```js
+const schema [{
+    name: 'name',
+    validation: 'required|letters|length:2,20'
+}];
+```
 
 ### Custom Validators
 If you would like to add your own custom validators, then you can pass those to the `options` argument
