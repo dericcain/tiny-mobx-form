@@ -5,6 +5,7 @@ export interface IField {
   placeholder?: string;
   initialValue?: string;
   value?: string;
+  isFocused: boolean;
   isTouched: boolean;
   validation: string;
   isValid: boolean;
@@ -27,6 +28,7 @@ export interface IForm {
   isValid: boolean;
   errors: string[];
   isDirty: boolean;
+  autofocusOnError: boolean | undefined;
   values: IValues;
   showErrors(): void;
   reset(): void;
@@ -53,5 +55,6 @@ export interface IValidator {
 }
 
 export interface IFormOptions {
-  additionalValidators: IValidators;
+  additionalValidators?: IValidators;
+  autofocusOnError?: boolean;
 }

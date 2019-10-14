@@ -12,11 +12,13 @@ export class Field implements IField {
 
   @observable public initialValue: string;
 
-  @observable private _value: string;
+  @observable public isTouched = false;
 
-  @observable isTouched = false;
+  @observable public isFocused = false;
 
   @observable public validation: string;
+
+  @observable private _value: string;
 
   @computed
   public get value() {
@@ -65,5 +67,6 @@ export class Field implements IField {
   public reset() {
     this._value = this.initialValue;
     this.isTouched = false;
+    this.isFocused = false;
   }
 }
