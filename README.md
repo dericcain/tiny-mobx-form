@@ -10,7 +10,8 @@ Read the docs here: [https://dericgw.github.io/tiny-mobx-form/](https://dericgw.
 - Small, less than 2KB and tree-shakable
 - Written in TypeScript using MobX
 - Includes popular validations
-- Can add your own custom validations if needed
+- Ability to add your own custom validations if needed
+- Accessibility friendly by automatically autofocusing input on validation error
 
 ## Installation
 `npm i tiny-mobx-form` or `yarn add tiny-mobx-form`
