@@ -1,13 +1,17 @@
 import { action, computed, observable } from 'mobx';
 
 import { Field } from './field';
-import { IFields, IForm, IFormOptions, IFormSchema, IInitialValues } from './types';
+import {
+  IFields,
+  IForm,
+  IFormOptions,
+  IFormSchema,
+  IInitialValues,
+} from './types';
 import { validators } from './validators';
 
 export class Form implements IForm {
   @observable.struct public fields: IFields = {};
-
-  public autofocusOnError: boolean | undefined;
 
   @computed
   private get fieldNames(): string[] {
@@ -40,7 +44,7 @@ export class Form implements IForm {
   public constructor(
     fields: IFormSchema[],
     initialValues: IInitialValues = {},
-    options: IFormOptions = { additionalValidators: {} },
+    options: IFormOptions = {},
   ) {
     fields.forEach((props: IFormSchema) => {
       this.fieldNames.push(props.name);
@@ -49,12 +53,15 @@ export class Form implements IForm {
       this.fields[newProps.name] = new Field(
         this,
         newProps,
-        validators(options.additionalValidators),
+        {
+          additionalValidators: validators(options.additionalValidators || {}),
+          validatorMessages: options.validatorMessages || {},
+        }
       );
     });
   }
 
-  @action('TinyMobxForm | showErrors')
+  @action('TinyMobXForm | showErrors')
   public showErrors() {
     let hasSetFocus = false;
     this.fieldNames.forEach(name => {
@@ -67,7 +74,7 @@ export class Form implements IForm {
     });
   }
 
-  @action('TinyMobxForm | reset')
+  @action('TinyMobXForm | reset')
   public reset() {
     this.fieldNames.forEach(name => this.fields[name].reset());
   }

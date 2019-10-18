@@ -28,7 +28,6 @@ export interface IForm {
   isValid: boolean;
   errors: string[];
   isDirty: boolean;
-  autofocusOnError: boolean | undefined;
   values: IValues;
   showErrors(): void;
   reset(): void;
@@ -51,9 +50,16 @@ export interface IValidators {
 }
 
 export interface IValidator {
-  (field: IField, ...args: any[]): undefined | string;
+  (field: IField, message: string, ...args: any[]): undefined | string;
+}
+
+export interface IValidatorMessage {
+  [validatorName: string]: string;
 }
 
 export interface IFormOptions {
   additionalValidators?: IValidators;
+  validatorMessages?: IValidatorMessage;
 }
+
+export interface IFieldOptions extends Required<IFormOptions> {}

@@ -1,7 +1,14 @@
 import { action, computed, observable } from 'mobx';
 
 import { validate } from './validators';
-import { IField, IForm, IFormSchema, IValidators } from './types';
+import {
+  IField,
+  IFieldOptions,
+  IForm,
+  IFormSchema,
+  IValidatorMessage,
+  IValidators
+} from './types';
 
 export class Field implements IField {
   public name: string;
@@ -20,6 +27,10 @@ export class Field implements IField {
 
   @observable private _value: string;
 
+  private readonly validators: IValidators;
+
+  private readonly validatorMessages: IValidatorMessage;
+
   @computed
   public get value() {
     return this._value;
@@ -37,7 +48,7 @@ export class Field implements IField {
 
   @computed
   public get errors(): string[] {
-    return validate(this, this.validators);
+    return validate(this, this.validatorMessages, this.validators);
   }
 
   @computed
@@ -48,7 +59,10 @@ export class Field implements IField {
   public constructor(
     public form: IForm,
     { name, label = '', placeholder = '', validation = '', initialValue = '' }: IFormSchema,
-    private validators: IValidators,
+    {
+      additionalValidators,
+      validatorMessages,
+    }: IFieldOptions,
   ) {
     this.name = name;
     this.label = label;
@@ -56,6 +70,8 @@ export class Field implements IField {
     this.initialValue = initialValue;
     this._value = initialValue;
     this.validation = validation;
+    this.validators = additionalValidators;
+    this.validatorMessages = validatorMessages;
   }
 
   public set value(value: string) {

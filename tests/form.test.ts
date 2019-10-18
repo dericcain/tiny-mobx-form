@@ -100,6 +100,27 @@ describe('MobX Tiny Form', () => {
       expect(form.fields.email.isFocused).toBe(false);
       expect(form.fields.zip.isFocused).toBe(true);
     });
+
+    it('should allow custom validator messages', () => {
+      const schema = [
+        {
+          name: 'name',
+          label: 'name',
+          placeholder: 'name',
+          validation: 'required',
+        },
+      ];
+      const initialValues = { name: 'ted' };
+      const message = 'That junk is required yo!';
+      const form = new Form(schema, initialValues, { validatorMessages: { required: message } });
+
+      form.fields.name.value = '';
+
+      form.showErrors();
+
+      expect(form.fields.name.hasErrors).toBe(true);
+      expect(form.fields.name.errors[0]).toBe(message);
+    });
   });
 
   describe('Field', () => {
@@ -379,7 +400,7 @@ describe('MobX Tiny Form', () => {
 
     it('should throw if the validator is not found', () => {
       expect(() => {
-        validate(form.fields['should-throw'], validators());
+        validate(form.fields['should-throw'], undefined, validators());
       }).toThrow();
     });
   });
