@@ -16,11 +16,12 @@ import OnSubmitValidation from './components/onsubmit-validation';
 ✌️Tiny (~2KB) tree-shakable MobX form library
 
 ## Features
-- Small, less than 2KB and tree-shakable
-- Written in TypeScript using MobX
-- Includes popular validations
-- Can add your own custom validations if needed
-- Accessibility friendly by automatically autofocusing input on validation error
+- 🚶 Small, less than 2KB and tree-shakable
+- 💪 Written in TypeScript using MobX
+- ⚠️ Includes popular validations
+- 📝 Can add your own custom validations if needed
+- 👓 Accessibility friendly by automatically autofocusing input on validation error
+- 🇲🇽 Supports multilingual by allowing custom validation messages to be used
 
 ---
 
@@ -46,7 +47,7 @@ The `Form` accepts three arguments: `new Form(fields, initialValues, options)`:
 |-----------------|--------------------------------------------|----------|--------------------------------|-----------------------------------------------------------------------------------------------|
 | `fields`        | `IFormSchema[]`                            | true     |                                | This is the definition of each field in the form. (See the `IFormSchema` type below)          |
 | `initialValues` | `{ fieldName: 'value' }`                   | false    | `{}`                           | These are the initial values for each form field.                                  |
-| `options`       | `IFormOptions`                             | false    | `{ additionalValidators: {} }` | These are extra options that can be passed into the form. (See the `IFormOptions` type below) |
+| `options`       | `IFormOptions`                             | false    | `{ additionalValidators: {}, validatorMessages: {} }` | These are extra options that can be passed into the form. (See the `IFormOptions` type below) |
 
 #### Fields Schema | `IFormSchema`
 Here is the shape of the `IFormSchema` type:
@@ -113,11 +114,10 @@ const initialValues = {
 Here is the `IFormOptions` type with the other dependent types. See the [Validation](#validation) section for a 
 better explanation of adding additional validators:
 
-> Right now, there is only one option available, but there will be more in the future.
-
 ```typescript
 interface IFormOptions {
-  additionalValidators: IValidators;
+  additionalValidators?: IValidators; // Your own custom validators
+  validatorMessages?: IValidatorMessage; // Your own custom validator messages
 }
 
 interface IValidators {
@@ -136,8 +136,16 @@ const options = {
     'file-size': fileSizeValidator,
     'date': dateValidator,
   },
+  validatorMessages: {
+     // This will overwrite the "required" validator default message 
+     required: 'This field is required, for real yo.'
+  }
 };
 ```
+
+> If you want to use your own messages for validators but don't want to write your own, then you 
+> should use the `validatorMessages` option to pass in the validator messages that should be 
+> overwritten.
 
 > After running `form.showErrors()`, the first field that has a validation error will have the property 
 > `isFocused` set to `true`.

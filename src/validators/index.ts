@@ -1,4 +1,4 @@
-import { IField, IValidators } from '../types';
+import { IField, IValidatorMessage, IValidators } from '../types';
 import {
   alpha,
   letters,
@@ -14,7 +14,11 @@ import {
   size,
 } from './validations';
 
-export function validate(field: IField, validators: IValidators): string[] | any[] {
+export function validate(
+  field: IField,
+  validatorMessages: IValidatorMessage | undefined = undefined,
+  validators: IValidators,
+): string[] | any[] {
   const validations = field.validation.split('|');
   return validations
     .map((validation: string) => {
@@ -27,7 +31,9 @@ export function validate(field: IField, validators: IValidators): string[] | any
       if (!(validator in validators)) {
         throw new Error(`There is no validator with the name of ${validator}`);
       }
-      return validators[validator](field, ...args);
+      const message =
+        validatorMessages && validator in validatorMessages ? validatorMessages[validator] : '';
+      return validators[validator](field, message, ...args);
     })
     .filter(Boolean);
 }
