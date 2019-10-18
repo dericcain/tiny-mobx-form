@@ -40,7 +40,7 @@ export class Form implements IForm {
   public constructor(
     fields: IFormSchema[],
     initialValues: IInitialValues = {},
-    options: IFormOptions = { additionalValidators: {}, autofocusOnError: false },
+    options: IFormOptions = { additionalValidators: {} },
   ) {
     fields.forEach((props: IFormSchema) => {
       this.fieldNames.push(props.name);
@@ -51,7 +51,6 @@ export class Form implements IForm {
         newProps,
         validators(options.additionalValidators),
       );
-      this.autofocusOnError = options.autofocusOnError;
     });
   }
 

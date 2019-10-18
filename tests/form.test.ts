@@ -67,6 +67,39 @@ describe('MobX Tiny Form', () => {
       form.showErrors();
       expect(dirtyFields()).toHaveLength(2);
     });
+
+    it('should focus on the first field where there is a validation error', () => {
+      const schema = [
+        {
+          name: 'name',
+          label: 'name',
+          placeholder: 'name',
+          validation: 'required',
+        },
+        {
+          name: 'zip',
+          label: 'zip',
+          placeholder: 'zip',
+          validation: 'required|number',
+        },
+        {
+          name: 'email',
+          label: 'email',
+          placeholder: 'email',
+          validation: 'required|email',
+        }
+      ];
+      const initialValues = { name: 'ted', email: 'ted@foo.com' };
+      const form = new Form(schema, initialValues);
+
+      form.fields.zip.value = 'abc';
+
+      form.showErrors();
+
+      expect(form.fields.name.isFocused).toBe(false);
+      expect(form.fields.email.isFocused).toBe(false);
+      expect(form.fields.zip.isFocused).toBe(true);
+    });
   });
 
   describe('Field', () => {

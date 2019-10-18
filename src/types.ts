@@ -56,5 +56,4 @@ export interface IValidator {
 
 export interface IFormOptions {
   additionalValidators?: IValidators;
-  autofocusOnError?: boolean;
 }
