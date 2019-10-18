@@ -5,8 +5,9 @@ route: /
 
 import { Playground } from 'docz'
 import './styles.css';
-import InstantValidation from './components/instant-validation'
-import OnblurValidation from './components/onblur-validation'
+import InstantValidation from './components/instant-validation';
+import OnblurValidation from './components/onblur-validation';
+import OnSubmitValidation from './components/onsubmit-validation';
 
 # Tiny MobX Form
 [![Coverage Status](https://coveralls.io/repos/github/dericgw/tiny-mobx-form/badge.svg?branch=master)](https://coveralls.io/github/dericgw/tiny-mobx-form?branch=master)
@@ -133,9 +134,12 @@ const options = {
   additionalValidators: {
     'file-size': fileSizeValidator,
     'date': dateValidator,
-  } 
+  },
 };
 ```
+
+> After running `form.showErrors()`, the first field that has a validation error will have the property 
+> `isFocused` set to `true`.
 
 > See the [Validation](#validation) section for more info on custom validators.
 
@@ -176,6 +180,7 @@ interface IField {
   placeholder?: string; // The placeholder
   initialValue?: string; // The initial value
   value?: string; // The current value (computed property)
+isFocused: boolean; // Used to mark whether a field
   isTouched: boolean; // This is whether the field is touched or 
   validation: string; // The validation string that is passed in
   isValid: boolean; // Whether or not the field has passed all validations 
@@ -521,4 +526,108 @@ function OnblurValidation() {
 }
 
 export default observer(OnblurValidation);
+```
+
+### On Submit Validation Example
+<Playground>
+  <OnSubmitValidation />
+</Playground>
+
+Here is the code for the `OnSubmitValidation` example:
+
+> Note how we can autofocus on the first field with a validation error. We use a combination of the 
+> `autoFocus` and `key` prop in order to place focus. This way we don't have to deal with `ref`s.
+
+```js
+import React, { useState } from 'react';
+import { observer } from 'mobx-react';
+
+import { Form } from '../../dist';
+import { TextInputField } from 'evergreen-ui';
+
+const schema = [
+  {
+    name: 'firstName',
+    placeholder: 'John',
+    label: 'First Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'lastName',
+    placeholder: 'Appleseed',
+    label: 'Last Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'email',
+    placeholder: 'jon@gmail.com',
+    label: 'Email',
+    validation: 'required|email',
+    initialValue: '',
+  },
+  {
+    name: 'age',
+    placeholder: '22',
+    label: 'Age',
+    validation: 'required|number|size:18,100',
+    initialValue: '',
+  },
+];
+
+const form = new Form(schema);
+const { fields } = form;
+
+function Field({ name, showErrors }) {
+  console.log(fields[name]);
+  function update(e) {
+    fields[name].value = e.currentTarget.value;
+  }
+  return (
+    <div>
+      <TextInputField
+        type="text"
+        name={fields[name].name}
+        value={fields[name].value}
+        placeholder={fields[name].placeholder}
+        label={fields[name].label}
+        validationMessage={ showErrors && fields[name].hasErrors && fields[name].errors.join(' ')}
+        isInvalid={showErrors && fields[name].hasErrors}
+        onChange={update}
+        autoFocus={fields[name].isFocused ? "true": "false"}
+        key={`${fields[name].name}-${fields[name].isFocused}`}
+      />
+    </div>
+  );
+}
+
+const ObservedField = observer(Field);
+
+function OnSubmit() {
+  const [showErrors, setShowErrors] = useState(false);
+
+  function submit(e) {
+    e.preventDefault();
+    setShowErrors(true);
+    form.showErrors();
+    if (form.isValid) {
+      alert(JSON.stringify(form.values));
+    }
+  }
+
+  return (
+    <div>
+      <form onSubmit={submit}>
+        <ObservedField name="firstName" showErrors={showErrors} />
+        <ObservedField name="lastName" showErrors={showErrors} />
+        <ObservedField name="email" showErrors={showErrors} />
+        <ObservedField name="age" showErrors={showErrors} />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+}
+
+export default observer(OnSubmit);
 ```

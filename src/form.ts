@@ -7,6 +7,8 @@ import { validators } from './validators';
 export class Form implements IForm {
   @observable.struct public fields: IFields = {};
 
+  public autofocusOnError: boolean | undefined;
+
   @computed
   private get fieldNames(): string[] {
     return Object.keys(this.fields);
@@ -54,8 +56,14 @@ export class Form implements IForm {
 
   @action('TinyMobxForm | showErrors')
   public showErrors() {
+    let hasSetFocus = false;
     this.fieldNames.forEach(name => {
       this.fields[name].isTouched = true;
+      // Set the first invalid field we find to isFocused so we can focus on that field
+      if (!this.fields[name].isValid && !hasSetFocus) {
+        this.fields[name].isFocused = true;
+        hasSetFocus = true;
+      }
     });
   }
 
