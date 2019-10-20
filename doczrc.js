@@ -8,6 +8,10 @@ export default {
   dest: './docs',
   hashRouter: true,
   base: '/tiny-mobx-form/',
+  menu: [
+    'The Basics',
+    'React Bindings'
+  ],
   themeConfig: {
     colors: {
       primary: '#73A0D4',

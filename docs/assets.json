@@ -1,10 +1,13 @@
 {
   "vendors.js": "/tiny-mobx-form/static/js/vendors.cb1a8a94.js",
-  "vendors.js.map": "/tiny-mobx-form/static/js/vendors.7e428daa1e5ea08f3852.js.map",
-  "app.js": "/tiny-mobx-form/static/js/app.7e428daa1e5ea08f3852.js",
-  "app.js.map": "/tiny-mobx-form/static/js/app.7e428daa1e5ea08f3852.js.map",
-  "example-introduction.css": "/tiny-mobx-form/static/css/example-introduction.7e428daa1e5ea08f3852.css",
-  "example-introduction.js": "/tiny-mobx-form/static/js/example-introduction.df9d2914.js",
-  "example-introduction.js.map": "/tiny-mobx-form/static/js/example-introduction.7e428daa1e5ea08f3852.js.map",
+  "vendors.js.map": "/tiny-mobx-form/static/js/vendors.59923942ac8de4e48c69.js.map",
+  "app.js": "/tiny-mobx-form/static/js/app.59923942ac8de4e48c69.js",
+  "app.js.map": "/tiny-mobx-form/static/js/app.59923942ac8de4e48c69.js.map",
+  "example-introduction.css": "/tiny-mobx-form/static/css/example-introduction.59923942ac8de4e48c69.css",
+  "example-introduction.js": "/tiny-mobx-form/static/js/example-introduction.01bdb286.js",
+  "example-introduction.js.map": "/tiny-mobx-form/static/js/example-introduction.59923942ac8de4e48c69.js.map",
+  "example-react-bindings.css": "/tiny-mobx-form/static/css/example-react-bindings.59923942ac8de4e48c69.css",
+  "example-react-bindings.js": "/tiny-mobx-form/static/js/example-react-bindings.e14af2de.js",
+  "example-react-bindings.js.map": "/tiny-mobx-form/static/js/example-react-bindings.59923942ac8de4e48c69.js.map",
   "index.html": "/tiny-mobx-form/index.html"
 }

@@ -48,7 +48,7 @@ export class Field implements IField {
 
   @computed
   public get errors(): string[] {
-    return validate(this, this.validatorMessages, this.validators);
+    return this.validators ? validate(this, this.validatorMessages, this.validators) : [];
   }
 
   @computed

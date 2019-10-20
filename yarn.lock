@@ -13512,6 +13512,11 @@ tiny-glob@^0.2.6:
     globalyzer "^0.1.0"
     globrex "^0.1.1"
 
+tiny-mobx-form-react@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/tiny-mobx-form-react/-/tiny-mobx-form-react-0.1.0.tgz#13a2a82369f9dd5618768ac5d8cd07dfb43e89da"
+  integrity sha512-y4A++9pktbwShNuO1MQxprVabgsJZEMembj21x5AodC+IOG3N2XhY7tsk4E3zClO5XDNK0CY3luF4lNXQ09FgA==
+
 tinycolor2@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.1.tgz#f4fad333447bc0b07d4dc8e9209d8f39a8ac77e8"
