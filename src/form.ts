@@ -1,13 +1,7 @@
 import { action, computed, observable } from 'mobx';
 
 import { Field } from './field';
-import {
-  IFields,
-  IForm,
-  IFormOptions,
-  IFormSchema,
-  IInitialValues,
-} from './types';
+import { IFields, IForm, IFormOptions, IFormSchema, IInitialValues } from './types';
 import { validators } from './validators';
 
 export class Form implements IForm {
@@ -50,14 +44,10 @@ export class Form implements IForm {
       this.fieldNames.push(props.name);
       const initialValue = initialValues[props.name] || props.initialValue;
       const newProps = { ...props, initialValue };
-      this.fields[newProps.name] = new Field(
-        this,
-        newProps,
-        {
-          additionalValidators: validators(options.additionalValidators || {}),
-          validatorMessages: options.validatorMessages || {},
-        }
-      );
+      this.fields[newProps.name] = new Field(this, newProps, {
+        additionalValidators: validators(options.additionalValidators || {}),
+        validatorMessages: options.validatorMessages || {},
+      });
     });
   }
 

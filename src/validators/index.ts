@@ -19,6 +19,7 @@ export function validate(
   validatorMessages: IValidatorMessage | undefined = undefined,
   validators: IValidators,
 ): string[] | any[] {
+  if (!field.validation) return [];
   const validations = field.validation.split('|');
   return validations
     .map((validation: string) => {

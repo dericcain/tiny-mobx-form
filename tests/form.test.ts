@@ -403,5 +403,13 @@ describe('MobX Tiny Form', () => {
         validate(form.fields['should-throw'], undefined, validators());
       }).toThrow();
     });
+
+    it('should allow a schema to be passed in without validation', () => {
+      const schema = [{ name: 'foo' }];
+      const form = new Form(schema);
+      expect(() => {
+        validate(form.fields.foo, undefined, validators());
+      }).not.toThrow();
+    });
   });
 });
