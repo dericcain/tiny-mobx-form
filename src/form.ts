@@ -52,7 +52,7 @@ export class Form implements IForm {
   }
 
   @action('TinyMobXForm | showErrors')
-  public showErrors() {
+  public showErrors = () => {
     let hasSetFocus = false;
     this.fieldNames.forEach(name => {
       this.fields[name].isTouched = true;
@@ -62,10 +62,10 @@ export class Form implements IForm {
         hasSetFocus = true;
       }
     });
-  }
+  };
 
   @action('TinyMobXForm | reset')
-  public reset() {
+  public reset = () => {
     this.fieldNames.forEach(name => this.fields[name].reset());
-  }
+  };
 }
