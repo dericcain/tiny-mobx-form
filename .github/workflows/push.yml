@@ -27,13 +27,13 @@ jobs:
         run: yarn run coveralls
       - name: Publish tiny-mobx-form
         uses: primer/publish@master
-        args: [--dir=packages/tiny-mobx-form]
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-#      - name: Publish tiny-mobx-form-react
-#        uses: primer/publish@master
-#        args: --dir=packages/tiny-mobx-form-react
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          args: '--dir=packages/tiny-mobx-form'
+      - name: Publish tiny-mobx-form-react
+        uses: primer/publish@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          args: '--dir=packages/tiny-mobx-form-react'
