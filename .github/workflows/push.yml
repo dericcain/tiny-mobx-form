@@ -11,11 +11,11 @@ jobs:
         with:
           node-version: '12.x'
       - name: Install
-        run: yarn install
+        run: npm ci
       - name: Build
-        run: yarn run build
+        run: npm run build
       - name: Check Size
-        run: yarn run size
+        run: npm run size
       - name: Test
         run: yarn run coveralls
         env:
@@ -32,15 +32,15 @@ jobs:
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Install
-        run: yarn install --pure-lockfile
+        run: npm ci
       - name: Build
-        run: yarn build
+        run: npm run build
 #      - name: NPM Auth
 #        run: echo "registry=//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > ~/.npmrc
 #        env:
 #          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Publish
-        run: yarn publish-ci
+        run: npm run publish-ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
