@@ -242,25 +242,25 @@ added.
 - email - `email`
 - phone number - `phone`
 - postal - `postal`
-- number - `number`
+- numbers - `numbers`
 - alphanumeric - `alpha`
 - size (number between) - `size:<min>,<max>` | `size:50,100`
 - one of (array list) - `one-of:<comma separated list>` | `one-of:red,blue,green`
 
 ### Using Validators
 Validators are passed into the form schema and follow this pattern:
-```
-const schema [{
-    name: 'name',
-    validation: 'name-of-validator:all,the,arguments' // Arguments are separated by commas
+```js
+const schema = [{
+  name: 'name',
+  validation: 'name-of-validator:all,the,arguments' // Arguments are separated by commas
 }];
 ```
 
 It is also possible to add more than one validator by separating validators by the pipe `|`.
 ```js
-const schema [{
-    name: 'name',
-    validation: 'required|letters|length:2,20'
+const schema = [{
+  name: 'name',
+  validation: 'required|letters|length:2,20'
 }];
 ```
 
@@ -304,7 +304,7 @@ const schema = [{
   name: 'avatar',
   // This is the validator with the min and max...
   validation: 'file-size:0,2'
-}]
+}];
 
 // The name "file-size" is important because that is how it is referenced in the schema above.
 const form = new Form(schema, {}, { 'file-size': fileSizeValidator });

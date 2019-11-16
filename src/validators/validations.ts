@@ -68,7 +68,7 @@ export const postal: IValidator = ({ value }, message) =>
   error(!!value && !POSTAL.test(value), message || MESSAGES.postal());
 
 const NUMBER: RegExp = /^\d+$/;
-export const number: IValidator = ({ value }, message) =>
+export const numbers: IValidator = ({ value }, message) =>
   error(!!value && !NUMBER.test(value), message || MESSAGES.number());
 
 const ALPHA: RegExp = /^\w+$/;

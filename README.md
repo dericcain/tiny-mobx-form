@@ -1,4 +1,4 @@
-# React Tiny MobX Form
+# Tiny MobX Form
 [![Coverage Status](https://coveralls.io/repos/github/dericgw/tiny-mobx-form/badge.svg?branch=master)](https://coveralls.io/github/dericgw/tiny-mobx-form?branch=master)
 ---
 
