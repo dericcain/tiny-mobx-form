@@ -17,7 +17,7 @@ jobs:
       - name: Check Size
         run: npm run size
       - name: Test
-        run: yarn run coveralls
+        run: npm run coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
   publish:
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-          registry-url: "https://registry.npmjs.org/registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN"
+          registry-url: "https://registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN"
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Install
