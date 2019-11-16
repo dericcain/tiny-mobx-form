@@ -51,7 +51,9 @@
   "peerDependencies": {
     "mobx": ">=4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^2.1.6"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint ./src --ext .ts --fix && npm run build:docs && git add docs"
