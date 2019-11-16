@@ -1,0 +1,642 @@
+---
+name: The Basics
+route: /
+---
+
+import { Playground } from 'docz'
+import './styles.css';
+import InstantValidation from './components/instant-validation';
+import OnblurValidation from './components/onblur-validation';
+import OnSubmitValidation from './components/onsubmit-validation';
+
+# Tiny MobX Form
+[![Coverage Status](https://coveralls.io/repos/github/dericgw/tiny-mobx-form/badge.svg?branch=master)](https://coveralls.io/github/dericgw/tiny-mobx-form?branch=master)
+---
+
+✌️Tiny (~2KB) tree-shakable MobX form library
+
+## Features
+- 🚶 Small, less than 2KB and tree-shakable
+- 💪 Written in TypeScript using MobX
+- ⚠️ Includes popular validations
+- 📝 Can add your own custom validations if needed
+- 👓 Accessibility friendly by automatically autofocusing input on validation error
+- 🇲🇽 Supports multilingual by allowing custom validation messages to be used
+
+---
+
+## Installation
+`npm i tiny-mobx-form` or `yarn add tiny-mobx-form`
+
+---
+
+## `Form`
+The `Form` class is the main module that makes tiny-mobx-form work. The `Form` takes an array of 
+objects that define a `Field`. Here are some of the things that the `Form` does:
+- Creates fields
+- Observes fields
+- Observes values
+- Observes whether the field has been touched (the value has been changed)
+- Validation
+- Validation errors
+
+### `Form` Arguments
+The `Form` accepts three arguments: `new Form(fields, initialValues, options)`:
+
+| Argument Name   | Type                                       | Required | Default                        | Description                                                                                   |
+|-----------------|--------------------------------------------|----------|--------------------------------|-----------------------------------------------------------------------------------------------|
+| `fields`        | `IFormSchema[]`                            | true     |                                | This is the definition of each field in the form. (See the `IFormSchema` type below)          |
+| `initialValues` | `{ fieldName: 'value' }`                   | false    | `{}`                           | These are the initial values for each form field.                                  |
+| `options`       | `IFormOptions`                             | false    | `{ additionalValidators: {}, validatorMessages: {} }` | These are extra options that can be passed into the form. (See the `IFormOptions` type below) |
+
+#### Fields Schema | `IFormSchema`
+Here is the shape of the `IFormSchema` type:
+```typescript
+interface IFormSchema {
+  name: string; // The name of the field (must be unique)
+  label?: string; // The label of the field
+  placeholder?: string; // The placeholder of the input
+  validation?: string; // The validation string ("required|length:2.10|letters")
+  initialValue?: string; // The initial value of the field
+}
+```
+
+Here is an example of what that looks like:
+```js
+const schema = [
+  {
+    name: 'firstName',
+    placeholder: 'John',
+    label: 'First Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'lastName',
+    placeholder: 'Appleseed',
+    label: 'Last Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'email',
+    placeholder: 'jon@gmail.com',
+    label: 'Email',
+    validation: 'required|email',
+    initialValue: '',
+  },
+  {
+    name: 'age',
+    placeholder: '22',
+    label: 'Age',
+    validation: 'required|number|size:18,100',
+    initialValue: '',
+  },
+];
+```
+
+#### Form Initial Values
+The `Form` can accept initial values as a second argument. This is good to use when you need to query
+an API for the form values and you do not have the values at the time when the schema is created.
+The `initialValues` is an object whose key is the name of the field and the value is the value of
+that field. Here is an example:
+
+```js
+const initialValues = {
+  firstName: 'Ted',
+  lastName: 'Chavez',
+  email: 'ted@email.com',
+  age: 31
+};
+```
+
+#### Form Options | `IFormOptions`
+Here is the `IFormOptions` type with the other dependent types. See the [Validation](#validation) section for a 
+better explanation of adding additional validators:
+
+```typescript
+interface IFormOptions {
+  additionalValidators?: IValidators; // Your own custom validators
+  validatorMessages?: IValidatorMessage; // Your own custom validator messages
+}
+
+interface IValidators {
+  [name: string]: IValidator;
+}
+
+interface IValidator {
+  (field: IField, ...args: any[]): undefined | string;
+}
+```
+
+Here is an example of what the options would look like:
+```js
+const options = {
+  additionalValidators: {
+    'file-size': fileSizeValidator,
+    'date': dateValidator,
+  },
+  validatorMessages: {
+     // This will overwrite the "required" validator default message 
+     required: 'This field is required, for real yo.'
+  }
+};
+```
+
+> If you want to use your own messages for validators but don't want to write your own, then you 
+> should use the `validatorMessages` option to pass in the validator messages that should be 
+> overwritten.
+
+> After running `form.showErrors()`, the first field that has a validation error will have the property 
+> `isFocused` set to `true`.
+
+> See the [Validation](#validation) section for more info on custom validators.
+
+### `Form` Methods and Properties
+A `Form` instance has a few methods and properties available that should be used to work with the 
+form. Here is the `IForm` interface in which the `Form` implements:
+
+```typescript
+interface IForm {
+  fields: IFields; // These are the fields that get instantiated
+  isValid: boolean; // This returns whether all of the fields are valid
+  errors: string[]; // This is an array of error messages
+  isDirty: boolean; // This returns whether the form's initial values have changed
+  values: IValues; // This is an object of all of the fields and their values (good for sending to server)
+  showErrors(): void; // This makes all of the fields touched so that the error message shows for each field
+  reset(): void; // This resets the form to its initial values
+}
+```
+
+You can use each of this methods to interact with the `Form`.
+
+> See the [Examples](#examples) for more information on how to work wit the `Form` instance.
+
+---
+
+## `Field`
+When a `Form` is created, the fields (the schema) that are passed into the `Form` constructor are used
+to create a `Field` instance. It is possible to access each field by using the field's name: 
+`form.fieldName.property` The `Field` instance has some helpful methods and properties: 
+
+> Access to each field is available by using the field name: `field.name.value`
+
+```typescript
+interface IField {
+  form: IForm; // The Form that the field belongs to
+  name: string; // The name of the field passed in via the schema
+  label?: string; // The field label
+  placeholder?: string; // The placeholder
+  initialValue?: string; // The initial value
+  value?: string; // The current value (computed property)
+isFocused: boolean; // Used to mark whether a field
+  isTouched: boolean; // This is whether the field is touched or 
+  validation: string; // The validation string that is passed in
+  isValid: boolean; // Whether or not the field has passed all validations 
+  isDirty: boolean; // Does the current value differ from the initial value?
+  hasErrors: boolean; // Does the field have any validation errors?
+  errors: string[]; // The array of errors for the field
+  reset(): void; // Resets the field to the initial value
+}
+```
+
+> A `Field` can be touched and not dirty if the input has changed from the initial value but then 
+> reverted back to the initial value, for instance:
+```js
+// The initialValue is "jon"
+field.value = 'john' // The field is now "touched" and "dirty"
+field.value = 'jon' // The field is now "touched" but NOT "dirty"
+```
+
+### Update `Field` value
+If you need to update a `Field` value, you simply mutate (change) the value like so:
+```js
+field.value = 'Some new value';
+```
+
+That is the beauty of working with MobX 👍
+
+Sometimes it is useful to compare two fields and that is why the `Form` instance lives on each field.
+This is especially helpful for [validation](#validation) because you can do things like this with the `Field` 
+instance.
+
+```js
+const dateValidator = field => {
+  if (moment(field.value).isAfter(field.form.endDate.value)) {
+    return `The start date cannot be after the end date.`;
+  }
+  return undefined;
+}
+```
+
+## Validation
+Tiny MobX Form has the most common validations built in and also allows custom validations to be
+added.
+
+### Validators
+- required - `required`
+- required if - `required-if:<name of field>` | `required-if:last-name`
+- length (string length) - `length:<min>,<max>` | `length:4,30`
+- match - `match:<name of field>` | `match:password`
+- letters - `letters`
+- email - `email`
+- phone number - `phone`
+- postal - `postal`
+- numbers - `numbers`
+- alphanumeric - `alpha`
+- size (number between) - `size:<min>,<max>` | `size:50,100`
+- one of (array list) - `one-of:<comma separated list>` | `one-of:red,blue,green`
+
+### Using Validators
+Validators are passed into the form schema and follow this pattern:
+```js
+const schema = [{
+  name: 'name',
+  validation: 'name-of-validator:all,the,arguments' // Arguments are separated by commas
+}];
+```
+
+It is also possible to add more than one validator by separating validators by the pipe `|`.
+```js
+const schema = [{
+  name: 'name',
+  validation: 'required|letters|length:2,20'
+}];
+```
+
+### Custom Validators
+If you would like to add your own custom validators, then you can pass those to the `options` argument
+of the `Form` constructor. You would pass them in as an object. The object key is the name of the
+validator and the value is the validator:
+```js
+const additionalValidators = {
+  'file-size': fileSizeValidator,
+};
+```
+
+As an example, say we want to get the file size of a value and we want our validation to look like
+this: `file-size:2` (that is 2KB). The validator would look like this:
+```js
+// The field is passed in so you can get any of its properties. 
+// The other arguments are spread into the validator
+const fileSizeValidator = (field, max) => {
+  if (!!field.value && field.value.size > max * 1024 /* 1,024 bytes in a KB */) {
+    return `The file size is too larger than ${max}KB`;
+  }
+  return undefined;
+}
+```
+
+Or, say we wanted a range for our file size that would look like this `file-size:1,4`. Then our 
+validator would look like this:
+```js
+const fileSizeValidator = (field, min, max) => {
+  if (!!field.value && (field.value.size < min * 1024 || field.value.size > max * 1024)) {
+    return `The file size must be between ${min}KB and ${max}KB`;
+  }
+  return undefined;
+}
+```
+
+And then to add that custom validator, you pass it into the `Form` at the time of construction:
+```js
+const schema = [{
+  name: 'avatar',
+  // This is the validator with the min and max...
+  validation: 'file-size:0,2'
+}];
+
+// The name "file-size" is important because that is how it is referenced in the schema above.
+const form = new Form(schema, {}, { 'file-size': fileSizeValidator });
+```
+
+---
+
+## Examples
+
+### Instant Validation Example
+<Playground>
+  <InstantValidation />
+</Playground>
+
+Here is the code for the Instant Validation Example above:
+```
+import React from 'react';
+import { observer } from 'mobx-react';
+import { TextInputField } from 'evergreen-ui';
+import { Form } from 'tiny-mobx-form';
+
+const schema = [
+  {
+    name: 'firstName',
+    placeholder: 'John',
+    label: 'First Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'lastName',
+    placeholder: 'Appleseed',
+    label: 'Last Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'email',
+    placeholder: 'jon@gmail.com',
+    label: 'Email',
+    validation: 'required|email',
+    initialValue: '',
+  },
+  {
+    name: 'age',
+    placeholder: '22',
+    label: 'Age',
+    validation: 'required|number|size:18,100',
+    initialValue: '',
+  },
+];
+
+const { fields } = new Form(schema);
+
+function InstantValidation() {
+  return (
+    <div>
+      <div>
+        <TextInputField
+          required
+          type="text"
+          name="firstName"
+          value={fields.firstName.value}
+          placeholder={fields.firstName.placeholder}
+          label={fields.firstName.label}
+          validationMessage={fields.firstName.isDirty && fields.firstName.hasErrors && fields.firstName.errors.join(' ')}
+          isInvalid={fields.firstName.isDirty && fields.firstName.hasErrors}
+          onChange={e => (fields.firstName.value = e.currentTarget.value)}
+        />
+      </div>
+      <div>
+        <TextInputField
+          required
+          type="text"
+          name="lastName"
+          value={fields.lastName.value}
+          placeholder={fields.lastName.placeholder}
+          label={fields.lastName.label}
+          validationMessage={fields.lastName.isDirty && fields.lastName.hasErrors && fields.lastName.errors.join(' ')}
+          isInvalid={fields.lastName.isDirty && fields.lastName.hasErrors}
+          onChange={e => (fields.lastName.value = e.currentTarget.value)}
+        />
+      </div>
+      <div>
+        <TextInputField
+          required
+          type="text"
+          name="email"
+          value={fields.email.value}
+          placeholder={fields.email.placeholder}
+          label={fields.email.label}
+          validationMessage={fields.email.isDirty && fields.email.hasErrors && fields.email.errors.join(' ')}
+          isInvalid={fields.email.isDirty && fields.email.hasErrors}
+          onChange={e => (fields.email.value = e.currentTarget.value)}
+        />
+      </div>
+      <div>
+        <TextInputField
+          required
+          type="text"
+          name="age"
+          value={fields.age.value}
+          placeholder={fields.age.placeholder}
+          label={fields.age.label}
+          validationMessage={fields.age.isDirty && fields.age.hasErrors && fields.age.errors.join(' ')}
+          isInvalid={fields.age.isDirty && fields.age.hasErrors}
+          onChange={e => (fields.age.value = e.currentTarget.value)}
+          error={fields.age.isDirty && fields.age.hasErrors && fields.age.errors.join(' ')}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default observer(InstantValidation);
+```
+
+### On Blur Validation Example
+<Playground>
+  <OnblurValidation />
+</Playground>
+
+Here is the code for the On Blur Validation Example above:
+
+```js
+import React, { useState } from 'react';
+import { observer } from 'mobx-react';
+import { TextInputField } from 'evergreen-ui';
+import { Form } from 'tiny-mobx-form';
+
+const schema = [
+  {
+    name: 'firstName',
+    placeholder: 'John',
+    label: 'First Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'lastName',
+    placeholder: 'Appleseed',
+    label: 'Last Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'email',
+    placeholder: 'jon@gmail.com',
+    label: 'Email',
+    validation: 'required|email',
+    initialValue: '',
+  },
+  {
+    name: 'age',
+    placeholder: '22',
+    label: 'Age',
+    validation: 'required|number|size:18,100',
+    initialValue: '',
+  },
+];
+
+const { fields } = new Form(schema);
+
+function OnblurValidation() {
+  const [blurredFields, setBlurredFields] = useState([]);
+
+  return (
+    <div>
+      <div>
+        <TextInputField
+          required
+          type="text"
+          name="firstName"
+          value={fields.firstName.value}
+          placeholder={fields.firstName.placeholder}
+          label={fields.firstName.label}
+          validationMessage={blurredFields.includes('firstName') && fields.firstName.hasErrors && fields.firstName.errors.join(' ')}
+          onBlur={() => setBlurredFields([...blurredFields, 'firstName'])}
+          isInvalid={blurredFields.includes('firstName') && fields.firstName.hasErrors}
+          onChange={e => (fields.firstName.value = e.currentTarget.value)}
+        />
+      </div>
+      <div>
+        <TextInputField
+          required
+          type="text"
+          name="lastName"
+          value={fields.lastName.value}
+          placeholder={fields.lastName.placeholder}
+          label={fields.lastName.label}
+          validationMessage={blurredFields.includes('lastName') && fields.lastName.hasErrors && fields.lastName.errors.join(' ')}
+          onBlur={() => setBlurredFields([...blurredFields, 'lastName'])}
+          isInvalid={blurredFields.includes('lastName') && fields.lastName.hasErrors}
+          onChange={e => (fields.lastName.value = e.currentTarget.value)}
+        />
+      </div>
+      <div>
+        <TextInputField
+          required
+          type="text"
+          name="email"
+          value={fields.email.value}
+          placeholder={fields.email.placeholder}
+          label={fields.email.label}
+          validationMessage={blurredFields.includes('email') && fields.email.hasErrors && fields.email.errors.join(' ')}
+          onBlur={() => setBlurredFields([...blurredFields, 'email'])}
+          isInvalid={blurredFields.includes('email') && fields.email.hasErrors}
+          onChange={e => (fields.email.value = e.currentTarget.value)}
+        />
+      </div>
+      <div>
+        <TextInputField
+          required
+          type="text"
+          name="age"
+          value={fields.age.value}
+          placeholder={fields.age.placeholder}
+          label={fields.age.label}
+          validationMessage={blurredFields.includes('age') && fields.age.hasErrors && fields.age.errors.join(' ')}
+          onBlur={() => setBlurredFields([...blurredFields, 'age'])}
+          isInvalid={blurredFields.includes('age') && fields.age.hasErrors}
+          onChange={e => (fields.age.value = e.currentTarget.value)}
+          error={fields.age.isDirty && fields.age.hasErrors && fields.age.errors.join(' ')}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default observer(OnblurValidation);
+```
+
+### On Submit Validation Example
+<Playground>
+  <OnSubmitValidation />
+</Playground>
+
+Here is the code for the `OnSubmitValidation` example:
+
+> Note how we can autofocus on the first field with a validation error. We use a combination of the 
+> `autoFocus` and `key` prop in order to place focus. This way we don't have to deal with `ref`s.
+
+```js
+import React, { useState } from 'react';
+import { observer } from 'mobx-react';
+
+import { Form } from '../../dist';
+import { TextInputField } from 'evergreen-ui';
+
+const schema = [
+  {
+    name: 'firstName',
+    placeholder: 'John',
+    label: 'First Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'lastName',
+    placeholder: 'Appleseed',
+    label: 'Last Name',
+    validation: 'required|letters|length:2,20',
+    initialValue: '',
+  },
+  {
+    name: 'email',
+    placeholder: 'jon@gmail.com',
+    label: 'Email',
+    validation: 'required|email',
+    initialValue: '',
+  },
+  {
+    name: 'age',
+    placeholder: '22',
+    label: 'Age',
+    validation: 'required|number|size:18,100',
+    initialValue: '',
+  },
+];
+
+const form = new Form(schema);
+const { fields } = form;
+
+function Field({ name, showErrors }) {
+  console.log(fields[name]);
+  function update(e) {
+    fields[name].value = e.currentTarget.value;
+  }
+  return (
+    <div>
+      <TextInputField
+        type="text"
+        name={fields[name].name}
+        value={fields[name].value}
+        placeholder={fields[name].placeholder}
+        label={fields[name].label}
+        validationMessage={ showErrors && fields[name].hasErrors && fields[name].errors.join(' ')}
+        isInvalid={showErrors && fields[name].hasErrors}
+        onChange={update}
+        autoFocus={fields[name].isFocused ? "true": "false"}
+        key={`${fields[name].name}-${fields[name].isFocused}`}
+      />
+    </div>
+  );
+}
+
+const ObservedField = observer(Field);
+
+function OnSubmit() {
+  const [showErrors, setShowErrors] = useState(false);
+
+  function submit(e) {
+    e.preventDefault();
+    setShowErrors(true);
+    form.showErrors();
+    if (form.isValid) {
+      alert(JSON.stringify(form.values));
+    }
+  }
+
+  return (
+    <div>
+      <form onSubmit={submit}>
+        <ObservedField name="firstName" showErrors={showErrors} />
+        <ObservedField name="lastName" showErrors={showErrors} />
+        <ObservedField name="email" showErrors={showErrors} />
+        <ObservedField name="age" showErrors={showErrors} />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+}
+
+export default observer(OnSubmit);
+```

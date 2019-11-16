@@ -10,21 +10,29 @@ jobs:
         node-version: [12.x]
     steps:
       - uses: actions/checkout@v1
+      - uses: borales/actions-yarn@v2.0.0
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install
-        run: npm install
+        run: yarn install
       - name: Build
-        run: npm run build
+        run: yarn run build
       - name: Check Size
-        run: npm run size
+        run: yarn run size
       - name: Test
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: npm run coveralls
-      - name: Publish
+        run: yarn run coveralls
+      - name: Publish tiny-mobx-form
+        working-directory: ./packages/tiny-mobx-form
+        uses: primer/publish@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: Publish tiny-mobx-form-react
+        working-directory: ./packages/tiny-mobx-form-react
         uses: primer/publish@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
