@@ -28,17 +28,11 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-          registry-url: "https://registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN"
-        env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          registry-url: https://registry.npmjs.org
       - name: Install
         run: npm ci
       - name: Build
         run: npm run build
-#      - name: NPM Auth
-#        run: echo "registry=//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > ~/.npmrc
-#        env:
-#          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Publish
         run: npm run publish-ci
         env:
