@@ -6,7 +6,7 @@
     "build": "lerna run build",
     "build:docs": "lerna run build:docs",
     "coveralls": "lerna run coveralls",
-    "publish-packages": "lerna publish --contents dist --yes",
+    "publish-ci": "lerna publish from-package --contents dist --yes --no-verify-access",
     "size": "lerna run size",
     "start:docs": "lerna run start:docs",
     "test": "lerna run test"

@@ -24,20 +24,16 @@ jobs:
         run: yarn run coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-      - name: Publish
-        run: yarn publish-packages
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: yarn
+      - run: yarn publish-ci
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-#      - name: Publish tiny-mobx-form
-#        uses: primer/publish@master
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-#          args: '--dir=packages/tiny-mobx-form'
-#      - name: Publish tiny-mobx-form-react
-#        uses: primer/publish@master
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-#          args: '--dir=packages/tiny-mobx-form-react'
