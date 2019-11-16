@@ -21,10 +21,10 @@ jobs:
       - name: Check Size
         run: yarn run size
       - name: Test
+        run: yarn run coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: yarn run coveralls
-      -name: Publish
+      - name: Publish
         run: yarn publish-packages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
