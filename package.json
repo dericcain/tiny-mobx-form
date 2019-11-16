@@ -1,11 +1,12 @@
 {
   "name": "root",
-  "private": false,
+  "private": true,
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "build:docs": "lerna run build:docs",
     "coveralls": "lerna run coveralls",
+    "publish-packages": "lerna publish --contents dist --yes",
     "size": "lerna run size",
     "start:docs": "lerna run start:docs",
     "test": "lerna run test"
