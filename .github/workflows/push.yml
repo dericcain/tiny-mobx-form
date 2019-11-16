@@ -10,10 +10,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-#      - name: Use Node.js ${{ matrix.node-version }}
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: ${{ matrix.node-version }}
       - name: Install
         run: yarn install
       - name: Build
@@ -38,3 +34,4 @@ jobs:
       - run: yarn publish-ci
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
