@@ -39,6 +39,7 @@
     "build": "tsdx build",
     "coveralls": "npm run test -- --coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "tsdx lint ./src --ext .ts --fix",
+    "pre-commit": "npm run lint",
     "size": "size-limit",
     "start": "tsdx watch",
     "test": "tsdx test --env=jsdom",
@@ -51,16 +52,7 @@
     "tiny-mobx-form": ">=0.6"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^2.1.6",
-    "@testing-library/react": "^9.3.0",
-    "@testing-library/jest-dom": "^4.1.2",
-    "@testing-library/user-event": "^7.1.2",
-    "tiny-mobx-form": "^0.6.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
+    "tiny-mobx-form": "file:../tiny-mobx-form"
   },
   "prettier": {
     "printWidth": 100,

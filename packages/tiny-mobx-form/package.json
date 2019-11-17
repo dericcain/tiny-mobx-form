@@ -40,6 +40,7 @@
     "build:docs": "docz build",
     "coveralls": "npm run test -- --coverage && cat ./coverage/lcov.info | coveralls",
     "lint": "tsdx lint ./src --ext .ts --fix",
+    "pre-commit": "tsdx lint ./src --ext .ts --fix && npm run build:docs && git add ../../docs",
     "preversion": "npm run test:release && npm run build",
     "size": "size-limit",
     "start": "tsdx watch",
@@ -50,14 +51,6 @@
   },
   "peerDependencies": {
     "mobx": ">=4"
-  },
-  "devDependencies": {
-    "@size-limit/preset-small-lib": "^2.1.6"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint ./src --ext .ts --fix && npm run build:docs && git add docs"
-    }
   },
   "prettier": {
     "printWidth": 100,

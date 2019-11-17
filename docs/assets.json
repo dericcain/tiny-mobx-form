@@ -1,13 +1,13 @@
 {
-  "vendors.js": "/tiny-mobx-form/static/js/vendors.8ca999de.js",
-  "vendors.js.map": "/tiny-mobx-form/static/js/vendors.f86f0bac7c8201d3bdf1.js.map",
-  "app.js": "/tiny-mobx-form/static/js/app.f86f0bac7c8201d3bdf1.js",
-  "app.js.map": "/tiny-mobx-form/static/js/app.f86f0bac7c8201d3bdf1.js.map",
-  "example-introduction.css": "/tiny-mobx-form/static/css/example-introduction.f86f0bac7c8201d3bdf1.css",
-  "example-introduction.js": "/tiny-mobx-form/static/js/example-introduction.608d1b7a.js",
-  "example-introduction.js.map": "/tiny-mobx-form/static/js/example-introduction.f86f0bac7c8201d3bdf1.js.map",
-  "example-react-bindings.css": "/tiny-mobx-form/static/css/example-react-bindings.f86f0bac7c8201d3bdf1.css",
-  "example-react-bindings.js": "/tiny-mobx-form/static/js/example-react-bindings.cdc75101.js",
-  "example-react-bindings.js.map": "/tiny-mobx-form/static/js/example-react-bindings.f86f0bac7c8201d3bdf1.js.map",
+  "vendors.js": "/tiny-mobx-form/static/js/vendors.439d97b2.js",
+  "vendors.js.map": "/tiny-mobx-form/static/js/vendors.9508156ae5b639864402.js.map",
+  "app.js": "/tiny-mobx-form/static/js/app.9508156ae5b639864402.js",
+  "app.js.map": "/tiny-mobx-form/static/js/app.9508156ae5b639864402.js.map",
+  "example-introduction.css": "/tiny-mobx-form/static/css/example-introduction.9508156ae5b639864402.css",
+  "example-introduction.js": "/tiny-mobx-form/static/js/example-introduction.ce0acf55.js",
+  "example-introduction.js.map": "/tiny-mobx-form/static/js/example-introduction.9508156ae5b639864402.js.map",
+  "example-react-bindings.css": "/tiny-mobx-form/static/css/example-react-bindings.9508156ae5b639864402.css",
+  "example-react-bindings.js": "/tiny-mobx-form/static/js/example-react-bindings.574331c7.js",
+  "example-react-bindings.js.map": "/tiny-mobx-form/static/js/example-react-bindings.9508156ae5b639864402.js.map",
   "index.html": "/tiny-mobx-form/index.html"
 }
