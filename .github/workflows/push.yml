@@ -11,11 +11,11 @@ jobs:
         with:
           node-version: '12.x'
       - name: Install
-        run: npm i && npm run bootstrap
+        run: npm ci && npm run bootstrap
       - name: Build
         run: npm run build
-      - name: Check Size
-        run: npm run size
+#      - name: Check Size
+#        run: npm run size
       - name: Test
         run: npm run coveralls
         env:
@@ -30,7 +30,7 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org
       - name: Install
-        run: npm run bootstrap
+        run: npm ci && npm run bootstrap
       - name: Build
         run: npm run build
       - name: Publish
