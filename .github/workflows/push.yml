@@ -33,6 +33,8 @@ jobs:
         run: npx lerna bootstrap
       - name: Build
         run: npm run build
+      - name: Remove package-lock
+        run: git checkout package-lock.json
       - name: Publish
         run: npm run publish-ci
         env:
