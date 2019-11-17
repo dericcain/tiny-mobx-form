@@ -1,29 +1,37 @@
 import '@testing-library/jest-dom/extend-expect';
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, fireEvent } from '@testing-library/react';
 import React from 'react';
-import { Form, Field, useForm, useField } from '../src';
-import { Form as TinyMobxForm, IFormSchema } from 'tiny-mobx-form';
+import userEvent from '@testing-library/user-event';
+import { Form, Field, useForm, useField, ErrorField } from '../src';
+import { IFormSchema, Form as TinyMobxForm } from 'tiny-mobx-form';
 
 describe('React Bindings', () => {
-  const renderForm = (fields: IFormSchema[], el: React.ReactNode | null = null) =>
+  const mockSubmit = jest.fn();
+  const onSubmit = () =>  {
+    mockSubmit();
+  };
+  const renderForm = (
+    fields: IFormSchema[],
+    el: React.ReactNode | null = null,
+    submit: () => void = onSubmit,
+  ) =>
     render(
-      <Form fields={fields}>
+      <Form fields={fields} submit={submit} data-testid="form">
         <Field name="name">
-          {({ input, label, errors, hasErrors }) => (
+          {({ input, label }) => (
             <div>
               <label>{label}</label>
               <input {...input} data-testid="name" />
-              <span data-testid="name-errors">{hasErrors && errors.join(' ')}</span>
+              <ErrorField name="name" data-testid="name-errors" />
             </div>
           )}
         </Field>
         <Field name="email">
-          {({ input, label, errors, hasErrors }) => (
+          {({ input, label }) => (
             <div>
               <label>{label}</label>
               <input {...input} data-testid="email" />
-              <span data-testid="email-errors">{hasErrors && errors.join(' ')}</span>
+              <ErrorField name="email" data-testid="email-errors" />
             </div>
           )}
         </Field>
@@ -50,7 +58,8 @@ describe('React Bindings', () => {
     ];
 
     it('should render a form and update field values', () => {
-      const { getByTestId } = renderForm(schema);
+      const Button = () => <button type="submit">Submit</button>;
+      const { getByTestId } = renderForm(schema, <Button />);
       const name = getByTestId('name');
       const email = getByTestId('email');
 
@@ -76,6 +85,14 @@ describe('React Bindings', () => {
       const emailErrors = getByTestId('email-errors');
       expect(nameErrors).toHaveTextContent(/letters/i);
       expect(emailErrors).toHaveTextContent(/email/i);
+
+      userEvent.type(name, 'John David');
+      userEvent.type(email, 'john@email.com');
+
+      const form = getByTestId('form');
+
+      fireEvent.submit(form);
+      expect(mockSubmit).toHaveBeenCalled;
     });
   });
 
