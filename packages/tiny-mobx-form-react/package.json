@@ -1,0 +1,69 @@
+{
+  "name": "tiny-mobx-form-react",
+  "description": "⚛️ Tiny (<1KB) React bindings for Tiny MobX Form",
+  "version": "0.8.0",
+  "author": "Deric Cain<deric.cain@gmail.com>",
+  "license": "MIT",
+  "directories": {
+    "example": "example",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dericgw/tiny-mobx-form.git"
+  },
+  "keywords": [
+    "form",
+    "forms",
+    "mobx",
+    "mobx form",
+    "react form",
+    "mobx react form",
+    "react",
+    "reactive",
+    "validation",
+    "validator",
+    "schema",
+    "declarative",
+    "rules",
+    "react-form",
+    "mobx form react"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/tiny-mobx-form-react.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdx build",
+    "coveralls": "npm run test -- --coverage && cat ./coverage/lcov.info | coveralls",
+    "lint": "tsdx lint ./src --ext .ts --fix",
+    "pre-commit": "npm run lint",
+    "size": "size-limit",
+    "start": "tsdx watch",
+    "test": "tsdx test --env=jsdom",
+    "test:release": "npm t && npm run size"
+  },
+  "peerDependencies": {
+    "mobx": ">=4",
+    "mobx-react-lite": ">=1",
+    "react": ">=16",
+    "tiny-mobx-form": ">=0.6"
+  },
+  "devDependencies": {
+    "tiny-mobx-form": "0.7.0"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "size-limit": [
+    {
+      "path": "dist/tiny-mobx-form-react.esm.js",
+      "limit": "1kb"
+    }
+  ]
+}

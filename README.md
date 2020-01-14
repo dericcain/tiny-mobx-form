@@ -1,5 +1,6 @@
 # Tiny MobX Form
 [![Coverage Status](https://coveralls.io/repos/github/dericgw/tiny-mobx-form/badge.svg?branch=master)](https://coveralls.io/github/dericgw/tiny-mobx-form?branch=master)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 ---
 
 ✌️Tiny (~2KB) tree-shakable MobX form library
