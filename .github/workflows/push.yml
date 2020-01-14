@@ -20,23 +20,3 @@ jobs:
         run: npm run coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org
-      - name: Install
-        run: npx lerna bootstrap
-      - name: Build
-        run: npm run build
-      - name: Remove package-lock
-        run: git checkout package-lock.json
-      - name: Publish
-        run: npm run publish-ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

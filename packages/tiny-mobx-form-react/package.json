@@ -1,7 +1,7 @@
 {
   "name": "tiny-mobx-form-react",
   "description": "⚛️ Tiny (<1KB) React bindings for Tiny MobX Form",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "author": "Deric Cain<deric.cain@gmail.com>",
   "license": "MIT",
   "directories": {
