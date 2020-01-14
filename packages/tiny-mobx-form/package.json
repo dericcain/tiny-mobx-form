@@ -1,6 +1,6 @@
 {
   "name": "tiny-mobx-form",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Tiny (~2KB) tree-shakable MobX form library",
   "homepage": "https://dericgw.github.io/tiny-mobx-form/",
   "directories": {
@@ -33,7 +33,8 @@
   "module": "dist/tiny-mobx-form.esm.js",
   "typings": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "../../README.md"
   ],
   "scripts": {
     "build": "tsdx build",
