@@ -20,7 +20,7 @@ export function validate(
   validators: IValidators,
 ): string[] | any[] {
   if (!field.validation) return [];
-  const validations = field.validation.split('|');
+  const validations = field.validation.split('|').filter(Boolean);
   return validations
     .map((validation: string) => {
       const [validator, argument] = validation.split(':') as [keyof typeof validators, string];
