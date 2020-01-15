@@ -1,6 +1,6 @@
 {
   "name": "tiny-mobx-form",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Tiny (~2KB) tree-shakable MobX form library",
   "homepage": "https://dericgw.github.io/tiny-mobx-form/",
   "directories": {
