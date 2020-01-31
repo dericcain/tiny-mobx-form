@@ -102,17 +102,32 @@ describe('MobX Tiny Form', () => {
     });
 
     it('should allow custom validator messages', () => {
+      const message = 'That name is required yo!';
+      const emailMessage = 'Must be a valid email address.';
+
       const schema = [
         {
           name: 'name',
           label: 'name',
           placeholder: 'name',
           validation: 'required',
+          validationMessages: {
+            required: message
+          }
         },
+        {
+          name: 'email',
+          label: 'email',
+          placeholder: 'email',
+          validation: 'email',
+          validationMessages: {
+            email: emailMessage
+          }
+        },
+        
       ];
-      const initialValues = { name: 'ted' };
-      const message = 'That junk is required yo!';
-      const form = new Form(schema, initialValues, { validatorMessages: { required: message } });
+      const initialValues = { name: 'ted', email: 'this is an email' };
+      const form = new Form(schema, initialValues, {});
 
       form.fields.name.value = '';
 
@@ -120,6 +135,8 @@ describe('MobX Tiny Form', () => {
 
       expect(form.fields.name.hasErrors).toBe(true);
       expect(form.fields.name.errors[0]).toBe(message);
+      expect(form.fields.email.hasErrors).toBe(true);
+      expect(form.fields.email.errors[0]).toBe(emailMessage);
     });
   });
 

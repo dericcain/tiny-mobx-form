@@ -22,7 +22,7 @@ export class Field implements IField {
 
   private readonly validators: IValidators;
 
-  private readonly validatorMessages: IValidatorMessage;
+  private readonly validationMessages: IValidatorMessage;
 
   @computed
   public get value() {
@@ -41,7 +41,7 @@ export class Field implements IField {
 
   @computed
   public get errors(): string[] {
-    return this.validators ? validate(this, this.validatorMessages, this.validators) : [];
+    return this.validators ? validate(this, this.validationMessages, this.validators) : [];
   }
 
   @computed
@@ -51,8 +51,15 @@ export class Field implements IField {
 
   public constructor(
     public form: IForm,
-    { name, label = '', placeholder = '', validation = '', initialValue = '' }: IFormSchema,
-    { additionalValidators, validatorMessages }: IFieldOptions,
+    {
+      name,
+      label = '',
+      placeholder = '',
+      validation = '',
+      initialValue = '',
+      validationMessages = {},
+    }: IFormSchema,
+    { additionalValidators }: IFieldOptions,
   ) {
     this.name = name;
     this.label = label;
@@ -61,7 +68,7 @@ export class Field implements IField {
     this._value = initialValue;
     this.validation = validation;
     this.validators = additionalValidators;
-    this.validatorMessages = validatorMessages;
+    this.validationMessages = validationMessages;
   }
 
   public set value(value: string) {

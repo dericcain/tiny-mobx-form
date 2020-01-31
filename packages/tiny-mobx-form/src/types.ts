@@ -20,6 +20,7 @@ export interface IFormSchema {
   label?: string;
   placeholder?: string;
   validation?: string;
+  validationMessages?: IValidatorMessage;
   initialValue?: string;
 }
 
@@ -53,13 +54,12 @@ export interface IValidator {
   (field: IField, message: string, ...args: any[]): undefined | string;
 }
 
-export interface IValidatorMessage {
-  [validatorName: string]: string;
-}
+export type IValidatorMessage = {
+  [validatorName: string]: string | undefined;
+};
 
 export interface IFormOptions {
   additionalValidators?: IValidators;
-  validatorMessages?: IValidatorMessage;
 }
 
 export interface IFieldOptions extends Required<IFormOptions> {}

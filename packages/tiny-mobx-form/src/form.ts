@@ -46,7 +46,6 @@ export class Form implements IForm {
       const newProps = { ...props, initialValue };
       this.fields[newProps.name] = new Field(this, newProps, {
         additionalValidators: validators(options.additionalValidators || {}),
-        validatorMessages: options.validatorMessages || {},
       });
     });
   }
