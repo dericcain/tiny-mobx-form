@@ -604,7 +604,7 @@ function Field({ name, showErrors }) {
         validationMessage={ showErrors && fields[name].hasErrors && fields[name].errors.join(' ')}
         isInvalid={showErrors && fields[name].hasErrors}
         onChange={update}
-        autoFocus={fields[name].isFocused ? "true": "false"}
+        autoFocus={fields[name].isFocused ? true: false}
         key={`${fields[name].name}-${fields[name].isFocused}`}
       />
     </div>
