@@ -19,7 +19,7 @@ import OnSubmitValidation from './components/onsubmit-validation';
 - 🚶 Small, less than 2KB and tree-shakable
 - 💪 Written in TypeScript using MobX
 - ⚠️ Includes popular validations
-- 📝 Can add your own custom validations if needed
+- 📝 Can add your own custom validations per field if needed
 - 👓 Accessibility friendly by automatically autofocusing input on validation error
 - 🇲🇽 Supports multilingual by allowing custom validation messages to be used
 
@@ -58,6 +58,7 @@ interface IFormSchema {
   placeholder?: string; // The placeholder of the input
   validation?: string; // The validation string ("required|length:2,10|letters")
   initialValue?: string; // The initial value of the field
+  validationMessages?: IValidatorMessage; // This is an object used for custom field validation message
 }
 ```
 
@@ -70,6 +71,11 @@ const schema = [
     label: 'First Name',
     validation: 'required|letters|length:2,20',
     initialValue: '',
+    validationMessages: {
+      required: 'You must enter something in this field',
+      letters: 'You can only use letters in this field',
+      length: 'You must enter between 2 and 20 characters',
+    }
   },
   {
     name: 'lastName',
@@ -77,6 +83,11 @@ const schema = [
     label: 'Last Name',
     validation: 'required|letters|length:2,20',
     initialValue: '',
+    validationMessages: {
+      required: 'You must enter something in this field',
+      letters: 'You can only use letters in this field',
+      length: 'You must enter between 2 and 20 characters',
+    }
   },
   {
     name: 'email',
@@ -84,6 +95,10 @@ const schema = [
     label: 'Email',
     validation: 'required|email',
     initialValue: '',
+    validationMessages: {
+      required: 'You must enter something in this field',
+      email: 'You must enter an email address in this field',
+    }
   },
   {
     name: 'age',
@@ -91,8 +106,33 @@ const schema = [
     label: 'Age',
     validation: 'required|number|size:18,100',
     initialValue: '',
+    validationMessages: {
+      required: 'You must enter something in this field',
+      number: 'This field must contain only numbers',
+      length: 'The number must be at least 18, but no more than 100',
+    }
   },
 ];
+```
+
+##### `validationMessages`
+As you can see here, the `validationMessages` object is used to write your own custom validation 
+messages for each field. The `validationMessages` object is constructed using the name of the 
+validation message as the key and the validation message as the value. For instance, if you have a 
+validation named `password` and you wanted to customize its validation message, you could do that
+like so:
+```js
+const schema = [
+  {
+    name: 'password',
+    // Notice the password validation name "password" here
+    validation: 'password',
+    validationMessages: {
+      // The key "password" here refers to the validation "password" above
+      password: 'This is your custom validation message',     
+    } 
+  }
+]
 ```
 
 #### Form Initial Values
@@ -117,7 +157,6 @@ better explanation of adding additional validators:
 ```typescript
 interface IFormOptions {
   additionalValidators?: IValidators; // Your own custom validators
-  validatorMessages?: IValidatorMessage; // Your own custom validator messages
 }
 
 interface IValidators {
@@ -136,16 +175,12 @@ const options = {
     'file-size': fileSizeValidator,
     'date': dateValidator,
   },
-  validatorMessages: {
-     // This will overwrite the "required" validator default message 
-     required: 'This field is required, for real yo.'
-  }
 };
 ```
 
-> If you want to use your own messages for validators but don't want to write your own, then you 
-> should use the `validatorMessages` option to pass in the validator messages that should be 
-> overwritten.
+> If you want to use your own messages for validators but don't want to write your own validators, 
+> then you should use the `validationMessages` option, in the schema object, to pass in the validator 
+> messages that should be overwritten.
 
 > After running `form.showErrors()`, the first field that has a validation error will have the property 
 > `isFocused` set to `true`.
@@ -189,7 +224,7 @@ interface IField {
   placeholder?: string; // The placeholder
   initialValue?: string; // The initial value
   value?: string; // The current value (computed property)
-isFocused: boolean; // Used to mark whether a field
+  isFocused: boolean; // Will be true for the first field that has a validation error
   isTouched: boolean; // This is whether the field is touched or 
   validation: string; // The validation string that is passed in
   isValid: boolean; // Whether or not the field has passed all validations 

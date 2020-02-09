@@ -124,7 +124,7 @@ describe('MobX Tiny Form', () => {
             email: emailMessage
           }
         },
-        
+
       ];
       const initialValues = { name: 'ted', email: 'this is an email' };
       const form = new Form(schema, initialValues, {});
@@ -417,7 +417,7 @@ describe('MobX Tiny Form', () => {
 
     it('should throw if the validator is not found', () => {
       expect(() => {
-        validate(form.fields['should-throw'], undefined, validators());
+        validate(form.fields['should-throw'], {}, validators());
       }).toThrow();
     });
 
@@ -425,7 +425,7 @@ describe('MobX Tiny Form', () => {
       const schema = [{ name: 'foo' }];
       const form = new Form(schema);
       expect(() => {
-        validate(form.fields.foo, undefined, validators());
+        validate(form.fields.foo, {}, validators());
       }).not.toThrow();
     });
   });

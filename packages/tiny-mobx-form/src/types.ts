@@ -54,9 +54,15 @@ export interface IValidator {
   (field: IField, message: string, ...args: any[]): undefined | string;
 }
 
+// FIXME: This creates a compilation error of:
+//  Type '{ name: string; label: string; placeholder: string; validation: string; validationMessages:
+//  { email?: undefined; }; }' is not assignable to type 'IFormSchema'. Types of property
+//  'validationMessages' are incompatible. Type '{ email?: undefined; }' is not assignable to
+//  type 'IValidatorMessage'. Property 'email' is incompatible with index signature. Type
+//  'undefined' is not assignable to type 'string'.
 export type IValidatorMessage = {
-  [validatorName: string]: string | undefined;
-};
+  [key: string]: string;
+} | any;
 
 export interface IFormOptions {
   additionalValidators?: IValidators;

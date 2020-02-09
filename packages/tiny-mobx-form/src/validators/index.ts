@@ -16,7 +16,7 @@ import {
 
 export function validate(
   field: IField,
-  validatorMessages: IValidatorMessage | undefined = undefined,
+  validatorMessages: IValidatorMessage,
   validators: IValidators,
 ): string[] | any[] {
   if (!field.validation) return [];
@@ -33,7 +33,7 @@ export function validate(
         throw new Error(`There is no validator with the name of ${validator}`);
       }
       const message =
-        validatorMessages && validator in validatorMessages ? validatorMessages[validator] : '';
+        (validatorMessages && validator in validatorMessages) ? validatorMessages[validator] : '';
       return validators[validator](field, message, ...args);
     })
     .filter(Boolean);
