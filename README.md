@@ -5,7 +5,7 @@
 
 ✌️Tiny (~2KB) tree-shakable MobX form library
 
-Read the docs here: [https://dericcain.github.io/tiny-mobx-form/](https://dericgw.github.io/tiny-mobx-form/)
+Read the docs here: [https://dericcain.github.io/tiny-mobx-form/](https://dericcain.github.io/tiny-mobx-form/)
 
 ## Features
 - 🚶 Small, less than 2KB and tree-shakable
@@ -18,4 +18,4 @@ Read the docs here: [https://dericcain.github.io/tiny-mobx-form/](https://dericg
 ## Installation
 `npm i tiny-mobx-form` or `yarn add tiny-mobx-form`
 
-Read the docs here: [https://dericgw.github.io/tiny-mobx-form/](https://dericgw.github.io/tiny-mobx-form/)
+Read the docs here: [https://dericcain.github.io/tiny-mobx-form/](https://dericcain.github.io/tiny-mobx-form/)
